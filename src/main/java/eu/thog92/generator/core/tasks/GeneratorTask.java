@@ -31,7 +31,7 @@ public class GeneratorTask implements ITask<String>
         return this.generateSentence(true);
     }
 
-    private String generateSentence(boolean needToBeBlacklisted)
+    public String generateSentence(boolean needToBeBlacklisted)
     {
         List<String> sentences = dictionary.get("sentences");
         int sentenceID = this.rand.nextInt(sentences.size());
