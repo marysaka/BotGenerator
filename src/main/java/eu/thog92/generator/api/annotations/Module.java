@@ -1,4 +1,4 @@
-package eu.thog92.generator.api;
+package eu.thog92.generator.api.annotations;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

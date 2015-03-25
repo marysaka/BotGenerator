@@ -1,5 +1,7 @@
 package eu.thog92.generator.api;
 
+import eu.thog92.generator.api.annotations.Module;
+import eu.thog92.generator.api.events.EventBus;
 import eu.thog92.generator.api.tasks.ITaskManager;
 import eu.thog92.generator.core.Config;
 import eu.thog92.generator.core.http.HttpServerManager;
@@ -12,16 +14,18 @@ public abstract class BotGenerator
 {
     private static BotGenerator instance;
     protected ITaskManager tasksManager;
+    protected EventBus eventBus;
     protected Config config;
     protected HttpServerManager httpServerManager;
 
-    protected BotGenerator(ITaskManager tasksManager) throws IllegalAccessException
+    protected BotGenerator(ITaskManager tasksManager, EventBus eventBus) throws IllegalAccessException
     {
         if(instance != null)
             throw new IllegalAccessException("The bot is already instanced!");
 
         instance = this;
         this.tasksManager = tasksManager;
+        this.eventBus = eventBus;
     }
 
 
@@ -30,11 +34,9 @@ public abstract class BotGenerator
         try
         {
             // Init External Modules
-            long startTime = System.currentTimeMillis();
-            AnnotationFinder loader = new AnnotationFinder();
-            List<Class> modules = loader.search(Module.class);
-
-            System.out.println((System.currentTimeMillis() - startTime) + "ms");
+            this.initModules();
+            
+            
             this.config = this.readConfigFile();
             this.tasksManager.setConfig(config);
             //this.tasksManager = new TasksManager();
@@ -52,6 +54,8 @@ public abstract class BotGenerator
             System.exit(-1);
         }
     }
+
+    protected abstract void initModules();
 
     protected abstract Config readConfigFile() throws IOException;
 
