@@ -19,10 +19,16 @@ public class AnnotationFinder
     public AnnotationFinder()
     {
         blackListedPackage.add("oracle");
+        blackListedPackage.add("com/oracle");
         blackListedPackage.add("com/sun");
+        blackListedPackage.add("org/w3c");
+        blackListedPackage.add("org/xml");
+        blackListedPackage.add("org/omg");
+        blackListedPackage.add("org/jcp");
         blackListedPackage.add("sun/");
         blackListedPackage.add("java/");
         blackListedPackage.add("javafx/");
+        blackListedPackage.add("javax/");
         blackListedPackage.add("jdk/");
         blackListedPackage.add("twitter4j/");
         blackListedPackage.add("com/intellij");
@@ -78,12 +84,15 @@ public class AnnotationFinder
                 if (classpathEntry.endsWith(".jar")) {
                     File jar = new File(classpathEntry);
 
+                    // Don't scan internal libs
+                    if(jar.getPath().contains("jre" + File.separator + "lib"))
+                        continue;
+                    
                     JarInputStream is = new JarInputStream(new FileInputStream(jar));
 
                     JarEntry entry;
                     while( (entry = is.getNextJarEntry()) != null) {
                         if(entry.getName().endsWith(".class") && !this.isNotBlackListed(entry.getName())) {
-                           
                             try
                             {
                                 Class clazz = Class.forName(entry.getName().substring(0, entry.getName().length() - 6).replace("/", "."));

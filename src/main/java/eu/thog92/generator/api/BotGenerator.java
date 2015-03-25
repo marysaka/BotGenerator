@@ -32,16 +32,10 @@ public abstract class BotGenerator
         {
 
             this.config = this.readConfigFile();
+            this.tasksManager.setConfig(config);
 
             // Init External Modules
             this.initModules();
-
-            this.tasksManager.setConfig(config);
-            //this.tasksManager = new TasksManager();
-            /*this.generatorTask = new GeneratorTask();
-            drama = new TwitterTask(generatorTask);
-            drama.setDelay(config.delay);
-            this.tasksManager.scheduleTask(drama);*/
 
             if (config.isHTTPSeverEnabled)
                 this.httpServerManager = new HttpServerManager(this);

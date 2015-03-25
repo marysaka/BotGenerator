@@ -91,6 +91,7 @@ public class TasksManager implements ITaskManager
         }
     }
 
+    @Override
     public Twitter getTwitter()
     {
         return twitter;
