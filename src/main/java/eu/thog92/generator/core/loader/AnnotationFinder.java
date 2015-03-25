@@ -1,18 +1,31 @@
 package eu.thog92.generator.core.loader;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
 
 public class AnnotationFinder
 {
 
+    private final List<String> blackListedPackage = new ArrayList<>();
+
     public AnnotationFinder()
     {
+        blackListedPackage.add("oracle");
+        blackListedPackage.add("com/sun");
+        blackListedPackage.add("sun/");
+        blackListedPackage.add("java/");
+        blackListedPackage.add("javafx/");
+        blackListedPackage.add("jdk/");
+        blackListedPackage.add("twitter4j/");
+        blackListedPackage.add("com/intellij");
     }
 
 
@@ -52,34 +65,35 @@ public class AnnotationFinder
 
     public List<Class> search(Class<? extends Annotation> targetClass)
     {
-        return this.searchOnPackage("", targetClass);
+        return this.start(targetClass);
     }
 
-    private List<Class> searchOnPackage(String packageName, Class<? extends Annotation> targetClass)
+    private List<Class> start(Class<? extends Annotation> targetClass)
     {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         List<Class> classes = new ArrayList<>();
         try
         {
-            String path = packageName.replace('.', '/');
-            Enumeration<URL> resources = classLoader.getResources(path);
+            for (String classpathEntry : System.getProperty("java.class.path").split(System.getProperty("path.separator"))) {
+                if (classpathEntry.endsWith(".jar")) {
+                    File jar = new File(classpathEntry);
 
-            while (resources.hasMoreElements())
-            {
-                File file = new File(resources.nextElement().getFile());
-                if (file.isDirectory())
-                {
-                    classes.addAll(findClasses(file, packageName, targetClass));
-                } else if (file.getName().endsWith(".class"))
-                {
-                    try
-                    {
-                        Class clazz = Class.forName(packageName + "." + file.getName().substring(0, file.getName().length() - 6));
-                        if (this.containAnnotInClass(clazz, targetClass))
-                            classes.add(clazz);
+                    JarInputStream is = new JarInputStream(new FileInputStream(jar));
 
-                    } catch (ClassNotFoundException ignored)
-                    {
+                    JarEntry entry;
+                    while( (entry = is.getNextJarEntry()) != null) {
+                        if(entry.getName().endsWith(".class") && !this.isNotBlackListed(entry.getName())) {
+                           
+                            try
+                            {
+                                Class clazz = Class.forName(entry.getName().substring(0, entry.getName().length() - 6).replace("/", "."));
+                                if (this.containAnnotInClass(clazz, targetClass))
+                                    classes.add(clazz);
+
+                            } catch (Exception ignored)
+                            {
+                            }
+                        }
                     }
                 }
             }
@@ -88,6 +102,16 @@ public class AnnotationFinder
             e.printStackTrace();
         }
         return classes;
+    }
+
+    private boolean isNotBlackListed(String name)
+    {
+        for(String entry : blackListedPackage)
+        {
+            if(name.startsWith(entry))
+                return true;
+        }
+        return false;
     }
 
     private boolean containAnnotInClass(Class clazz, Class<? extends Annotation> targetClass)
