@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
-@Deprecated
 public class ResourceHandler implements HttpHandler
 {
 

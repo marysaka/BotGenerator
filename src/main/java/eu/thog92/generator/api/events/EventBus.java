@@ -8,31 +8,12 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
-/**
- * Created by Thog92 on 25/03/2015.
- */
 public class EventBus
 {
 
-    private HashMap<Class<Event>, List<Method>> eventMethodHashMap = new HashMap<Class<Event>, List<Method>>();
-    private HashMap<Class, List<Object>> objectHashMap = new HashMap<>();
-    /*
-            List<Object> instanciedModules = new ArrayList<>();
-        for(Class module : modules)
-        {
-            try
-            {
-                instanciedModules.add(module.newInstance());
-            } catch (InstantiationException e)
-            {
-            } catch (IllegalAccessException e)
-            {
-                //e.printStackTrace();
-            }
-        }
-     */
+    private final HashMap<Class<Event>, List<Method>> eventMethodHashMap = new HashMap<>();
+    private final HashMap<Class, List<Object>> objectHashMap = new HashMap<>();
 
     public boolean post(Object object)
     {
@@ -50,14 +31,12 @@ public class EventBus
                     method.invoke(toCall, object);
                 }
 
-            } catch (IllegalAccessException e)
+            } catch (IllegalAccessException ignored)
             {
-                e.printStackTrace();
-                continue;
-            } catch (InvocationTargetException e)
+
+            } catch (InvocationTargetException ignored)
             {
-                e.printStackTrace();
-                continue;
+
             }
         }
         return true;
@@ -81,11 +60,11 @@ public class EventBus
                     {
                         if(eventMethodHashMap.get(param) == null)
                         {
-                            eventMethodHashMap.put(param, new ArrayList<Method>());
+                            eventMethodHashMap.put(param, new ArrayList<>());
                         }
                         if(objectHashMap.get(clazz) == null)
                         {
-                            objectHashMap.put(clazz, new ArrayList<Object>());
+                            objectHashMap.put(clazz, new ArrayList<>());
                         }
 
                         if(!objectHashMap.get(clazz).contains(object))

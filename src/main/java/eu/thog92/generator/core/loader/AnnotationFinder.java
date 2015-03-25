@@ -21,7 +21,7 @@ public class AnnotationFinder
         if (packageName.startsWith("."))
             packageName = packageName.substring(1);
 
-        List<Class> classes = new ArrayList<Class>();
+        List<Class> classes = new ArrayList<>();
 
         if (!directory.exists())
         {
@@ -42,7 +42,7 @@ public class AnnotationFinder
                     if (this.containAnnotInClass(clazz, targetClass))
                         classes.add(clazz);
 
-                } catch (ClassNotFoundException e)
+                } catch (ClassNotFoundException ignored)
                 {
                 }
             }
@@ -55,10 +55,10 @@ public class AnnotationFinder
         return this.searchOnPackage("", targetClass);
     }
 
-    public List<Class> searchOnPackage(String packageName, Class<? extends Annotation> targetClass)
+    private List<Class> searchOnPackage(String packageName, Class<? extends Annotation> targetClass)
     {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        List<Class> classes = new ArrayList<Class>();
+        List<Class> classes = new ArrayList<>();
         try
         {
             String path = packageName.replace('.', '/');
@@ -78,7 +78,7 @@ public class AnnotationFinder
                         if (this.containAnnotInClass(clazz, targetClass))
                             classes.add(clazz);
 
-                    } catch (ClassNotFoundException e)
+                    } catch (ClassNotFoundException ignored)
                     {
                     }
                 }
@@ -90,7 +90,7 @@ public class AnnotationFinder
         return classes;
     }
 
-    public boolean containAnnotInClass(Class clazz, Class<? extends Annotation> targetClass)
+    private boolean containAnnotInClass(Class clazz, Class<? extends Annotation> targetClass)
     {
         for (Annotation annot : clazz.getDeclaredAnnotations())
         {

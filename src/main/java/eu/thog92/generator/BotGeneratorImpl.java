@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BotGeneratorImpl extends BotGenerator
@@ -23,7 +22,7 @@ public class BotGeneratorImpl extends BotGenerator
     private TwitterTask drama;
     private GeneratorTask generatorTask;
 
-    protected BotGeneratorImpl() throws IllegalAccessException, IOException
+    private BotGeneratorImpl() throws IllegalAccessException, IOException
     {
         super(new TasksManager(), new EventBus());
     }
@@ -40,13 +39,6 @@ public class BotGeneratorImpl extends BotGenerator
         {
             e.printStackTrace();
         }
-    }
-
-
-    @Override
-    public void init()
-    {
-        super.init();
     }
 
     @Override

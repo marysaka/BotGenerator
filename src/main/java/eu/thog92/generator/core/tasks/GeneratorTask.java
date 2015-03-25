@@ -31,7 +31,7 @@ public class GeneratorTask implements ITask<String>
         return this.generateSentence(true);
     }
 
-    public String generateSentence(boolean needToBeBlacklisted)
+    private String generateSentence(boolean needToBeBlacklisted)
     {
         List<String> sentences = dictionary.get("sentences");
         int sentenceID = this.rand.nextInt(sentences.size());
@@ -141,7 +141,7 @@ public class GeneratorTask implements ITask<String>
         return sentence;
     }
 
-    public boolean checkForAllOneDigit(int value)
+    private boolean checkForAllOneDigit(int value)
     {
         int manipulatedValue = value;
         int digit = manipulatedValue % 10;

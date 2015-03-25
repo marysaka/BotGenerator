@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class Dictionary
 {
 
-    private static Dictionary INSTANCE = new Dictionary();
+    private static final Dictionary INSTANCE = new Dictionary();
     private HashMap<String, ArrayList<String>> dictionary;
     private File dicDir;
 
@@ -25,7 +25,7 @@ public class Dictionary
         if(!dicDir.exists())
             throw new IOException("Data directory doesn't exist!");
 
-        this.dictionary = new HashMap<String, ArrayList<String>>();
+        this.dictionary = new HashMap<>();
         System.out.println("Loading Files...");
         for (String file : dicDir.list())
         {
@@ -66,6 +66,6 @@ public class Dictionary
             blackListFile.createNewFile();
         }
 
-        dictionary.put(blackListFile.getName().replace(".txt", ""), new WritableArrayList<String>(ArrayListHelper.loadStringArrayFromFile(blackListFile.getAbsolutePath()), blackListFile));
+        dictionary.put(blackListFile.getName().replace(".txt", ""), new WritableArrayList<>(ArrayListHelper.loadStringArrayFromFile(blackListFile.getAbsolutePath()), blackListFile));
     }
 }

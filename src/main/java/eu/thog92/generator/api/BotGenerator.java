@@ -1,14 +1,11 @@
 package eu.thog92.generator.api;
 
-import eu.thog92.generator.api.annotations.Module;
 import eu.thog92.generator.api.events.EventBus;
 import eu.thog92.generator.api.tasks.ITaskManager;
 import eu.thog92.generator.core.Config;
 import eu.thog92.generator.core.http.HttpServerManager;
-import eu.thog92.generator.core.loader.AnnotationFinder;
 
 import java.io.IOException;
-import java.util.List;
 
 public abstract class BotGenerator
 {
@@ -33,11 +30,12 @@ public abstract class BotGenerator
     {
         try
         {
+
+            this.config = this.readConfigFile();
+
             // Init External Modules
             this.initModules();
-            
-            
-            this.config = this.readConfigFile();
+
             this.tasksManager.setConfig(config);
             //this.tasksManager = new TasksManager();
             /*this.generatorTask = new GeneratorTask();
@@ -84,5 +82,10 @@ public abstract class BotGenerator
         {
             e.printStackTrace();
         }
+    }
+
+    public EventBus getEventBus()
+    {
+        return eventBus;
     }
 }

@@ -6,9 +6,6 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.*;
 
-/**
- * Created by Thog92 on 23/03/2015.
- */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value={TYPE})
 public @interface Module
