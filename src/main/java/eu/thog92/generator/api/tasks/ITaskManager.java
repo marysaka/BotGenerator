@@ -1,6 +1,7 @@
 package eu.thog92.generator.api.tasks;
 
 import eu.thog92.generator.core.Config;
+import twitter4j.api.TweetsResources;
 
 import java.io.IOException;
 
@@ -15,4 +16,5 @@ public interface ITaskManager
 
     void onFinishTask(ScheduledTask task);
 
+    TweetsResources getTwitter();
 }

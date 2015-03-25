@@ -1,6 +1,7 @@
 package eu.thog92.generator.core.tasks;
 
 import eu.thog92.generator.api.tasks.ScheduledTask;
+import twitter4j.TwitterException;
 
 public class TwitterTask extends ScheduledTask
 {
@@ -33,7 +34,7 @@ public class TwitterTask extends ScheduledTask
 
         System.out.println(result);
 
-        /*try
+        try
         {
             System.out.println("Sending to Twitter...");
             manager.getTwitter().updateStatus(result);
@@ -46,7 +47,7 @@ public class TwitterTask extends ScheduledTask
         } catch (TwitterException e)
         {
             e.printStackTrace();
-        }*/
+        }
         return true;
     }
 
