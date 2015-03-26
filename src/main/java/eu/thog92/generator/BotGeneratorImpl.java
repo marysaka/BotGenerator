@@ -59,7 +59,7 @@ public class BotGeneratorImpl extends BotGenerator
         System.out.println("Active modules " + activesAddons.size());
 
         this.eventBus.post(new InitEvent());
-        System.out.println((System.currentTimeMillis() - startTime) + "ms");
+        //System.out.println((System.currentTimeMillis() - startTime) + "ms");
     }
 
     private void loadModule(Map<String, Class> modules, String name) throws ModuleInitializationException

@@ -17,9 +17,8 @@ public class EventBus
 
     public boolean post(Object object)
     {
-        System.out.println("Here");
         List<Method> methodList = this.eventMethodHashMap.get(object.getClass());
-        System.out.println(methodList);
+
         if (methodList == null)
             return false;
 
