@@ -1,5 +1,6 @@
 package eu.thog92.generator.core;
 
+import eu.thog92.generator.api.Dictionary;
 import eu.thog92.generator.api.tasks.ITaskManager;
 import eu.thog92.generator.api.tasks.ScheduledTask;
 import twitter4j.Twitter;
@@ -21,36 +22,6 @@ public class TasksManager implements ITaskManager
             .newScheduledThreadPool(4);
 
     private HashMap<ScheduledTask, ScheduledFuture<?>> activeTasks = new HashMap<>();
-
-
-    public TasksManager() throws IOException
-    {
-        this.dictionary = Dictionary.getInstance();
-        this.dictionary.setDir(new File("data"));
-        this.dictionary.loadCombinations();
-        this.dictionary.loadBlackList();
-    }
-
-    private void loadTwitterCredentials() throws IOException
-    {
-        /*ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(config.debugTwitter)
-                .setOAuthConsumerKey(config.consumerKey)
-                .setOAuthConsumerSecret(config.consumerSecret)
-                .setOAuthAccessToken(config.accessToken)
-                .setOAuthAccessTokenSecret(config.accessTokenSecret);
-        TwitterFactory tf = new TwitterFactory(cb.build());
-        this.twitter = tf.getInstance();*/
-    }
-
-    public void reload() throws IOException
-    {
-        System.out.println("Reloading Config...");
-        this.loadTwitterCredentials();
-        System.out.println("Reloading Dictionary...");
-        this.dictionary.reload();
-        System.out.println("Config Reloaded");
-    }
 
     public void scheduleTask(ScheduledTask task)
     {

@@ -1,7 +1,7 @@
 package eu.thog92.generator.core.tasks;
 
 import eu.thog92.generator.api.tasks.ITask;
-import eu.thog92.generator.core.Dictionary;
+import eu.thog92.generator.api.Dictionary;
 import eu.thog92.generator.util.WritableArrayList;
 
 import java.util.List;
@@ -19,9 +19,9 @@ public class GeneratorTask implements ITask<String>
     private Dictionary dictionary;
     private Random rand;
 
-    public GeneratorTask()
+    public GeneratorTask(Dictionary dictionary)
     {
-        this.dictionary = Dictionary.getInstance();
+        this.dictionary = dictionary;
         this.rand = new Random();
     }
 

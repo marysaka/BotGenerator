@@ -55,17 +55,6 @@ public abstract class BotGenerator
     }
 
 
-    public void reload()
-    {
-        try
-        {
-            this.tasksManager.reload();
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
     public EventBus getEventBus()
     {
         return eventBus;

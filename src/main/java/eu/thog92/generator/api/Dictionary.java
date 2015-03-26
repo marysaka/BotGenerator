@@ -1,4 +1,4 @@
-package eu.thog92.generator.core;
+package eu.thog92.generator.api;
 
 import eu.thog92.generator.util.ArrayListHelper;
 import eu.thog92.generator.util.WritableArrayList;
@@ -10,20 +10,14 @@ import java.util.HashMap;
 
 public class Dictionary
 {
-
-    private static final Dictionary INSTANCE = new Dictionary();
     private HashMap<String, ArrayList<String>> dictionary;
     private File dicDir;
 
-    public static Dictionary getInstance()
-    {
-        return INSTANCE;
-    }
 
     public void loadCombinations() throws IOException
     {
         if (!dicDir.exists())
-            throw new IOException("Data directory doesn't exist!");
+            throw new IOException(dicDir.getAbsolutePath() + " directory doesn't exist!");
 
         this.dictionary = new HashMap<>();
         System.out.println("Loading Files...");
@@ -60,7 +54,7 @@ public class Dictionary
 
     public void loadBlackList() throws IOException
     {
-        File blackListFile = new File("blacklist.txt");
+        File blackListFile = new File(dicDir.getParentFile(), "blacklist.txt");
         if (!blackListFile.exists())
         {
             blackListFile.createNewFile();
