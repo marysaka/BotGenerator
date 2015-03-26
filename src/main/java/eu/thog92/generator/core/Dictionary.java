@@ -22,7 +22,7 @@ public class Dictionary
 
     public void loadCombinations() throws IOException
     {
-        if(!dicDir.exists())
+        if (!dicDir.exists())
             throw new IOException("Data directory doesn't exist!");
 
         this.dictionary = new HashMap<>();

@@ -1,7 +1,7 @@
 package eu.thog92.generator.core.tasks;
 
-import eu.thog92.generator.core.Dictionary;
 import eu.thog92.generator.api.tasks.ITask;
+import eu.thog92.generator.core.Dictionary;
 import eu.thog92.generator.util.WritableArrayList;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class GeneratorTask implements ITask<String>
 
     private static final Pattern INSERTION_REGEX = Pattern.compile(Pattern.quote("[")
             + "(.*?)" + Pattern.quote("]"));
-    
+
     private static final Pattern RANGE_REGEX = Pattern.compile("[0-9]+\\.\\.\\.[0-9]+");
     private Dictionary dictionary;
     private Random rand;

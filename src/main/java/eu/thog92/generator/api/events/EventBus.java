@@ -17,26 +17,27 @@ public class EventBus
 
     public boolean post(Object object)
     {
+        System.out.println("Here");
         List<Method> methodList = this.eventMethodHashMap.get(object.getClass());
-
-        if(methodList == null)
+        System.out.println(methodList);
+        if (methodList == null)
             return false;
 
         for (Method method : methodList)
         {
             try
             {
-                for(Object toCall : objectHashMap.get(method.getDeclaringClass()))
+                for (Object toCall : objectHashMap.get(method.getDeclaringClass()))
                 {
                     method.invoke(toCall, object);
                 }
 
             } catch (IllegalAccessException ignored)
             {
-
+                ignored.printStackTrace();
             } catch (InvocationTargetException ignored)
             {
-
+                ignored.printStackTrace();
             }
         }
         return true;
@@ -46,28 +47,28 @@ public class EventBus
     public void register(Object object)
     {
         Class clazz = object.getClass();
-        for(Method method : clazz.getDeclaredMethods())
+        for (Method method : clazz.getDeclaredMethods())
         {
-            if(method.getParameterCount() != 1)
+            if (method.getParameterCount() != 1)
                 continue;
 
-            for(Annotation annotation : method.getDeclaredAnnotations())
+            for (Annotation annotation : method.getDeclaredAnnotations())
             {
-                if(annotation.annotationType() == SubscribeEvent.class)
+                if (annotation.annotationType() == SubscribeEvent.class)
                 {
                     Class param = method.getParameterTypes()[0];
-                    if(param.getSuperclass().isAssignableFrom(Event.class))
+                    if (param.getSuperclass().isAssignableFrom(Event.class))
                     {
-                        if(eventMethodHashMap.get(param) == null)
+                        if (eventMethodHashMap.get(param) == null)
                         {
                             eventMethodHashMap.put(param, new ArrayList<>());
                         }
-                        if(objectHashMap.get(clazz) == null)
+                        if (objectHashMap.get(clazz) == null)
                         {
                             objectHashMap.put(clazz, new ArrayList<>());
                         }
 
-                        if(!objectHashMap.get(clazz).contains(object))
+                        if (!objectHashMap.get(clazz).contains(object))
                             objectHashMap.get(clazz).add(object);
 
                         eventMethodHashMap.get(param).add(method);

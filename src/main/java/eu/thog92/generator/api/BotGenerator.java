@@ -2,7 +2,6 @@ package eu.thog92.generator.api;
 
 import eu.thog92.generator.api.events.EventBus;
 import eu.thog92.generator.api.tasks.ITaskManager;
-import eu.thog92.generator.core.Config;
 
 import java.io.IOException;
 
@@ -15,7 +14,7 @@ public abstract class BotGenerator
 
     protected BotGenerator(ITaskManager tasksManager, EventBus eventBus, IHttpServerManager httpServerManager) throws IllegalAccessException
     {
-        if(instance != null)
+        if (instance != null)
             throw new IllegalAccessException("The bot is already instanced!");
 
         instance = this;
@@ -76,4 +75,5 @@ public abstract class BotGenerator
     {
         return httpServerManager;
     }
+
 }

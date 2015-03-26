@@ -24,16 +24,3 @@ jar {
         attributes 'Main-Class': mainClassName
     }
 }
-
-task allInOneJar(type: Jar) {
-    manifest {
-        attributes 'Main-Class': mainClassName
-    }
-    classifier = 'all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-}
-
-artifacts {
-    archives allInOneJar
-}

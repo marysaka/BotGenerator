@@ -1,4 +1,4 @@
-package eu.thog92.generator.api;
+package eu.thog92.generator.api.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,7 +12,7 @@ public class Configuration
 
     public Configuration(File baseDir, String name)
     {
-        this.configFile = new File(baseDir, name + ".json");
+        this.configFile = new File(baseDir, name + File.separator + name.toLowerCase() + ".json");
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 

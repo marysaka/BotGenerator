@@ -1,9 +1,9 @@
 package eu.thog92.generator.twitter;
 
 
-import eu.thog92.generator.api.Configuration;
 import eu.thog92.generator.api.annotations.Module;
 import eu.thog92.generator.api.annotations.SubscribeEvent;
+import eu.thog92.generator.api.config.Configuration;
 import eu.thog92.generator.api.events.InitEvent;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
@@ -25,13 +25,12 @@ public class TwitterModule
     {
         Configuration configuration = new Configuration(event.getConfigDir(), "twitter");
         TwitterConfiguration config = configuration.readFromFile(TwitterConfiguration.class);
-        if(config == null)
+        if (config == null)
         {
             System.err.println("A new twitter config have been created! Complete it before restart.");
             configuration.saveToDisk(new TwitterConfiguration("", "", "", "", ""));
             System.exit(666);
         }
-
 
 
         ConfigurationBuilder cb = new ConfigurationBuilder();

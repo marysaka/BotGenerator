@@ -1,13 +1,15 @@
 package eu.thog92.generator.core.loader;
 
+import eu.thog92.generator.api.annotations.Module;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
@@ -15,6 +17,8 @@ public class AnnotationFinder
 {
 
     private final List<String> blackListedPackage = new ArrayList<>();
+
+    private HashMap<String, Module> annotCache = new HashMap<>();
 
     public AnnotationFinder()
     {
@@ -34,12 +38,12 @@ public class AnnotationFinder
         blackListedPackage.add("com/intellij");
     }
 
-    private List<Class> findClasses(File directory, String packageName, Class<? extends Annotation> targetClass)
+    private Map<String, Class> findClasses(File directory, String packageName)
     {
         if (packageName.startsWith("."))
             packageName = packageName.substring(1);
 
-        List<Class> classes = new ArrayList<>();
+        Map<String, Class> classes = new HashMap<>();
 
         if (!directory.exists())
         {
@@ -50,15 +54,19 @@ public class AnnotationFinder
         {
             if (file.isDirectory())
             {
-                classes.addAll(findClasses(file, packageName + "." + file.getName(), targetClass));
+                classes.putAll(findClasses(file, packageName + "." + file.getName()));
             } else if (file.getName().endsWith(".class"))
             {
                 try
                 {
                     String name = file.getName().substring(0, file.getName().length() - 6);
                     Class clazz = Class.forName(packageName + '.' + name);
-                    if (this.containAnnotInClass(clazz, targetClass))
-                        classes.add(clazz);
+                    if (this.containAnnotInClass(clazz))
+                    {
+                        Module module = (Module) clazz.getAnnotation(Module.class);
+                        classes.put(module.name(), clazz);
+                        this.annotCache.put(module.name(), module);
+                    }
 
                 } catch (ClassNotFoundException ignored)
                 {
@@ -68,36 +76,52 @@ public class AnnotationFinder
         return classes;
     }
 
-    public List<Class> search(Class<? extends Annotation> targetClass)
+    public Map<String, Class> search()
     {
-        return this.start(targetClass);
+        return this.start();
     }
 
-    private List<Class> start(Class<? extends Annotation> targetClass)
+    public Module getAnnotFromClass(String name)
     {
-        List<Class> classes = new ArrayList<>();
+        return this.annotCache.get(name);
+    }
+
+    private Map<String, Class> start()
+    {
+        Map<String, Class> classes = new HashMap<>();
+
         try
         {
-            for (String classpathEntry : System.getProperty("java.class.path").split(System.getProperty("path.separator"))) {
+            for (String classpathEntry : System.getProperty("java.class.path").split(System.getProperty("path.separator")))
+            {
                 System.out.println("Scanning " + classpathEntry);
                 File entryFile = new File(classpathEntry);
-                if (classpathEntry.endsWith(".jar")) {
+                if (classpathEntry.endsWith(".jar"))
+                {
                     File jar = new File(classpathEntry);
 
                     // Don't scan internal libs
-                    if(jar.getPath().contains("jre" + File.separator + "lib"))
+                    if (jar.getPath().contains("jre" + File.separator + "lib"))
                         continue;
 
                     JarInputStream is = new JarInputStream(new FileInputStream(jar));
 
                     JarEntry entry;
-                    while( (entry = is.getNextJarEntry()) != null) {
-                        if(entry.getName().endsWith(".class") && !this.isNotBlackListed(entry.getName())) {
+                    while ((entry = is.getNextJarEntry()) != null)
+                    {
+                        if (entry.getName().endsWith(".class") && !this.isNotBlackListed(entry.getName()))
+                        {
                             try
                             {
                                 Class clazz = Class.forName(entry.getName().substring(0, entry.getName().length() - 6).replace("/", "."));
-                                if (this.containAnnotInClass(clazz, targetClass))
-                                    classes.add(clazz);
+                                if (this.containAnnotInClass(clazz))
+                                {
+                                    Module module = (Module) clazz.getAnnotation(Module.class);
+                                    classes.put(module.name(), clazz);
+
+                                    this.annotCache.put(module.name(), module);
+                                }
+
 
                             } catch (Exception ignored)
                             {
@@ -107,11 +131,11 @@ public class AnnotationFinder
                 }
 
                 // Support IDE and Gradle class dirs
-                else if(entryFile.exists() && entryFile.isDirectory())
+                else if (entryFile.exists() && entryFile.isDirectory())
                 {
-                    for(File file : entryFile.listFiles())
+                    for (File file : entryFile.listFiles())
                     {
-                        classes.addAll(findClasses(entryFile, "", targetClass));
+                        classes.putAll(findClasses(entryFile, ""));
                     }
                 }
             }
@@ -124,19 +148,19 @@ public class AnnotationFinder
 
     private boolean isNotBlackListed(String name)
     {
-        for(String entry : blackListedPackage)
+        for (String entry : blackListedPackage)
         {
-            if(name.startsWith(entry))
+            if (name.startsWith(entry))
                 return true;
         }
         return false;
     }
 
-    private boolean containAnnotInClass(Class clazz, Class<? extends Annotation> targetClass)
+    private boolean containAnnotInClass(Class clazz)
     {
         for (Annotation annot : clazz.getDeclaredAnnotations())
         {
-            if (annot.annotationType() == targetClass)
+            if (annot.annotationType() == Module.class)
             {
                 return true;
             }

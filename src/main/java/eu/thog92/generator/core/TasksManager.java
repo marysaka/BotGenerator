@@ -3,8 +3,6 @@ package eu.thog92.generator.core;
 import eu.thog92.generator.api.tasks.ITaskManager;
 import eu.thog92.generator.api.tasks.ScheduledTask;
 import twitter4j.Twitter;
-import twitter4j.TwitterFactory;
-import twitter4j.conf.ConfigurationBuilder;
 
 import java.io.File;
 import java.io.IOException;
