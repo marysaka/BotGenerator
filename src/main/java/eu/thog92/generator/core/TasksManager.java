@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 public class TasksManager implements ITaskManager
 {
 
-    private Config config;
     private Twitter twitter;
     private Dictionary dictionary;
     private ScheduledExecutorService scheduler = Executors
@@ -34,28 +33,16 @@ public class TasksManager implements ITaskManager
         this.dictionary.loadBlackList();
     }
 
-    public void setConfig(Config config)
-    {
-        this.config = config;
-        try
-        {
-            this.loadTwitterCredentials();
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
     private void loadTwitterCredentials() throws IOException
     {
-        ConfigurationBuilder cb = new ConfigurationBuilder();
+        /*ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(config.debugTwitter)
                 .setOAuthConsumerKey(config.consumerKey)
                 .setOAuthConsumerSecret(config.consumerSecret)
                 .setOAuthAccessToken(config.accessToken)
                 .setOAuthAccessTokenSecret(config.accessTokenSecret);
         TwitterFactory tf = new TwitterFactory(cb.build());
-        this.twitter = tf.getInstance();
+        this.twitter = tf.getInstance();*/
     }
 
     public void reload() throws IOException
@@ -89,16 +76,5 @@ public class TasksManager implements ITaskManager
                 this.activeTasks.remove(task).cancel(true);
             }
         }
-    }
-
-    @Override
-    public Twitter getTwitter()
-    {
-        return twitter;
-    }
-
-    public Config getConfig()
-    {
-        return config;
     }
 }

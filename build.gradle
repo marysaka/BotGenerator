@@ -5,7 +5,7 @@ apply plugin: 'application'
 
 group = 'eu.thog92'
 archivesBaseName = 'BotGenerator'
-mainClassName = 'eu.thog92.generator.BotGenerator'
+mainClassName = 'eu.thog92.generator.BotGeneratorImpl'
 version = appVersion
 
 repositories {
@@ -16,11 +16,24 @@ if (System.env.BUILD_NUMBER != null)  version = "$version.$System.env.BUILD_NUMB
 
 dependencies {
     compile 'org.twitter4j:twitter4j-core:4.0.2'
-    compile 'com.esotericsoftware.yamlbeans:yamlbeans:1.08'
+    compile 'com.google.code.gson:gson:2.3.1'
 }
 
 jar {
     manifest {
         attributes 'Main-Class': mainClassName
     }
+}
+
+task allInOneJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+    classifier = 'all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+artifacts {
+    archives allInOneJar
 }

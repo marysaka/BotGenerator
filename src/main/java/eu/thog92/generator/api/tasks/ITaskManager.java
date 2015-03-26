@@ -10,11 +10,7 @@ public interface ITaskManager
 
     void reload() throws IOException;
 
-    void setConfig(Config config);
-
     void scheduleTask(ScheduledTask task);
 
     void onFinishTask(ScheduledTask task);
-
-    Twitter getTwitter();
 }

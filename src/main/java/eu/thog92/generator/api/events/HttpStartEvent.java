@@ -2,11 +2,11 @@ package eu.thog92.generator.api.events;
 
 import com.sun.net.httpserver.HttpServer;
 
-public class HttpInitEvent extends Event
+public class HttpStartEvent extends Event
 {
     private final HttpServer httpServer;
 
-    public HttpInitEvent(HttpServer server)
+    public HttpStartEvent(HttpServer server)
     {
         this.httpServer = server;
     }

@@ -2,31 +2,32 @@ package eu.thog92.generator.core.http;
 
 import com.sun.net.httpserver.HttpServer;
 import eu.thog92.generator.api.BotGenerator;
-import eu.thog92.generator.api.events.HttpInitEvent;
+import eu.thog92.generator.api.IHttpServerManager;
+import eu.thog92.generator.api.events.HttpStartEvent;
 import eu.thog92.generator.core.http.handler.ResourceHandler;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-public class HttpServerManager
+public class HttpServerManager implements IHttpServerManager
 {
 
-    public HttpServerManager(BotGenerator instance)
+    private BotGenerator botGenerator;
+
+    public HttpServerManager()
     {
-        HttpServer server;
-        try
-        {
-            server = HttpServer.create(new InetSocketAddress(instance.getConfig().port), 0);
-            server.createContext("/", new ResourceHandler());
-            instance.getEventBus().post(new HttpInitEvent(server));
-            server.setExecutor(null); // creates a default executor
+        this.botGenerator = BotGenerator.getInstance();
+    }
+
+    public HttpServer createHTTPServer(int port) throws IOException
+    {
+        HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+        server.createContext("/", new ResourceHandler());
+        server.setExecutor(null); // creates a default executor
+        if(botGenerator.getEventBus().post(new HttpStartEvent(server)))
             server.start();
 
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-
+        return server;
     }
 
 }

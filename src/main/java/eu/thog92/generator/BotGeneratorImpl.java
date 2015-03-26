@@ -1,19 +1,15 @@
 package eu.thog92.generator;
 
-import com.esotericsoftware.yamlbeans.YamlReader;
 import eu.thog92.generator.api.BotGenerator;
 import eu.thog92.generator.api.annotations.Module;
 import eu.thog92.generator.api.events.EventBus;
 import eu.thog92.generator.api.events.InitEvent;
-import eu.thog92.generator.core.Config;
 import eu.thog92.generator.core.TasksManager;
+import eu.thog92.generator.core.http.HttpServerManager;
 import eu.thog92.generator.core.loader.AnnotationFinder;
 import eu.thog92.generator.core.tasks.GeneratorTask;
 import eu.thog92.generator.core.tasks.TwitterTask;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
@@ -24,7 +20,7 @@ public class BotGeneratorImpl extends BotGenerator
 
     private BotGeneratorImpl() throws IllegalAccessException, IOException
     {
-        super(new TasksManager(), new EventBus());
+        super(new TasksManager(), new EventBus(), new HttpServerManager());
     }
 
     public static void main(String[] args)
@@ -47,6 +43,7 @@ public class BotGeneratorImpl extends BotGenerator
         long startTime = System.currentTimeMillis();
         AnnotationFinder loader = new AnnotationFinder();
         List<Class> modules = loader.search(Module.class);
+        System.out.println("Found " + modules.size() + " modules");
         eventBus = new EventBus();
         for(Class clazz : modules)
         {
@@ -64,19 +61,5 @@ public class BotGeneratorImpl extends BotGenerator
 
         this.eventBus.post(new InitEvent());
         System.out.println((System.currentTimeMillis() - startTime) + "ms");
-    }
-
-    @Override
-    protected Config readConfigFile() throws IOException
-    {
-        File configFile = new File("config.yml");
-        if (!configFile.exists())
-        {
-            throw new FileNotFoundException("Config not found");
-        }
-        YamlReader reader = new YamlReader(new FileReader(configFile));
-        config = reader.read(Config.class);
-        reader.close();
-        return config;
     }
 }

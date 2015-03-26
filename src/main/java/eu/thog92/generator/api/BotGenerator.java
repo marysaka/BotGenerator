@@ -3,7 +3,6 @@ package eu.thog92.generator.api;
 import eu.thog92.generator.api.events.EventBus;
 import eu.thog92.generator.api.tasks.ITaskManager;
 import eu.thog92.generator.core.Config;
-import eu.thog92.generator.core.http.HttpServerManager;
 
 import java.io.IOException;
 
@@ -12,10 +11,9 @@ public abstract class BotGenerator
     private static BotGenerator instance;
     protected ITaskManager tasksManager;
     protected EventBus eventBus;
-    protected Config config;
-    protected HttpServerManager httpServerManager;
+    protected IHttpServerManager httpServerManager;
 
-    protected BotGenerator(ITaskManager tasksManager, EventBus eventBus) throws IllegalAccessException
+    protected BotGenerator(ITaskManager tasksManager, EventBus eventBus, IHttpServerManager httpServerManager) throws IllegalAccessException
     {
         if(instance != null)
             throw new IllegalAccessException("The bot is already instanced!");
@@ -23,6 +21,7 @@ public abstract class BotGenerator
         instance = this;
         this.tasksManager = tasksManager;
         this.eventBus = eventBus;
+        this.httpServerManager = httpServerManager;
     }
 
 
@@ -31,14 +30,10 @@ public abstract class BotGenerator
         try
         {
 
-            this.config = this.readConfigFile();
-            this.tasksManager.setConfig(config);
 
             // Init External Modules
             this.initModules();
 
-            if (config.isHTTPSeverEnabled)
-                this.httpServerManager = new HttpServerManager(this);
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -48,8 +43,6 @@ public abstract class BotGenerator
     }
 
     protected abstract void initModules();
-
-    protected abstract Config readConfigFile() throws IOException;
 
 
     public static BotGenerator getInstance()
@@ -62,10 +55,6 @@ public abstract class BotGenerator
         return tasksManager;
     }
 
-    public Config getConfig()
-    {
-        return config;
-    }
 
     public void reload()
     {
@@ -81,5 +70,10 @@ public abstract class BotGenerator
     public EventBus getEventBus()
     {
         return eventBus;
+    }
+
+    public IHttpServerManager getHttpManager()
+    {
+        return httpServerManager;
     }
 }

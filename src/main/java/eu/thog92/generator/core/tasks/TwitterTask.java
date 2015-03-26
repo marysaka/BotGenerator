@@ -1,23 +1,30 @@
 package eu.thog92.generator.core.tasks;
 
 import eu.thog92.generator.api.tasks.ScheduledTask;
+import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
 public class TwitterTask extends ScheduledTask
 {
 
-    private GeneratorTask generatorTask;
+    private final boolean sendTweetOnStartup;
+    private final String endOfSentence;
+    private final GeneratorTask generatorTask;
     private int numTweets;
+    private Twitter twitter;
 
-    public TwitterTask(GeneratorTask generatorTask)
+    public TwitterTask(Twitter twitter, GeneratorTask generatorTask, boolean sendTweetOnStartup, String endOfSentence)
     {
+        this.twitter = twitter;
         this.generatorTask = generatorTask;
+        this.sendTweetOnStartup = sendTweetOnStartup;
+        this.endOfSentence = endOfSentence;
     }
 
     @Override
     public Boolean execute()
     {
-        if (numTweets == 0 && !botGenerator.getConfig().sendTweetOnStartup)
+        if (numTweets == 0 && !sendTweetOnStartup)
         {
             System.out.println("Waiting " + delay + "s for the next tweet");
             numTweets++;
@@ -29,15 +36,15 @@ public class TwitterTask extends ScheduledTask
             System.err.println("result is null! Abort...");
             return true;
         }
-        if (botGenerator.getConfig().endOfSentense != null)
-            result = result + " " + botGenerator.getConfig().endOfSentense;
+        if (endOfSentence != null)
+            result = result + " " + endOfSentence;
 
         System.out.println(result);
 
         try
         {
             System.out.println("Sending to Twitter...");
-            manager.getTwitter().updateStatus(result);
+            twitter.updateStatus(result);
             System.out.println("Done. Waiting " + delay
                     + "s for the next tweet");
         } catch (StackOverflowError e)

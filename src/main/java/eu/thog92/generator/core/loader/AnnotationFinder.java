@@ -34,7 +34,6 @@ public class AnnotationFinder
         blackListedPackage.add("com/intellij");
     }
 
-
     private List<Class> findClasses(File directory, String packageName, Class<? extends Annotation> targetClass)
     {
         if (packageName.startsWith("."))
@@ -76,18 +75,19 @@ public class AnnotationFinder
 
     private List<Class> start(Class<? extends Annotation> targetClass)
     {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         List<Class> classes = new ArrayList<>();
         try
         {
             for (String classpathEntry : System.getProperty("java.class.path").split(System.getProperty("path.separator"))) {
+                System.out.println("Scanning " + classpathEntry);
+                File entryFile = new File(classpathEntry);
                 if (classpathEntry.endsWith(".jar")) {
                     File jar = new File(classpathEntry);
 
                     // Don't scan internal libs
                     if(jar.getPath().contains("jre" + File.separator + "lib"))
                         continue;
-                    
+
                     JarInputStream is = new JarInputStream(new FileInputStream(jar));
 
                     JarEntry entry;
@@ -103,6 +103,15 @@ public class AnnotationFinder
                             {
                             }
                         }
+                    }
+                }
+
+                // Support IDE and Gradle class dirs
+                else if(entryFile.exists() && entryFile.isDirectory())
+                {
+                    for(File file : entryFile.listFiles())
+                    {
+                        classes.addAll(findClasses(entryFile, "", targetClass));
                     }
                 }
             }
