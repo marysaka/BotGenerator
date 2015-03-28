@@ -1,4 +1,4 @@
-package eu.thog92.generator.core.tasks;
+package eu.thog92.generator.api.tasks;
 
 import eu.thog92.generator.api.tasks.ITask;
 import eu.thog92.generator.api.Dictionary;

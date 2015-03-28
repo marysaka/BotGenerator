@@ -1,5 +1,6 @@
-package eu.thog92.generator.core.tasks;
+package eu.thog92.generator.twitter;
 
+import eu.thog92.generator.api.tasks.GeneratorTask;
 import eu.thog92.generator.api.tasks.ScheduledTask;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
