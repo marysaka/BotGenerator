@@ -49,7 +49,7 @@ task twitterJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.output
     include 'eu/thog92/generator/twitter/**'
 
-    baseName = "twitter-module"
+    classifier = "twitter"
 }
 
 artifacts {
