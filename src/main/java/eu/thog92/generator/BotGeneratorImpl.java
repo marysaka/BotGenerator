@@ -56,9 +56,11 @@ public class BotGeneratorImpl extends BotGenerator
                 e.printStackTrace();
             }
         }
-        System.out.println("Active modules " + activesAddons.size());
 
         this.eventBus.post(new InitEvent());
+        System.out.println("Active modules " + activesAddons.size());
+
+
         //System.out.println((System.currentTimeMillis() - startTime) + "ms");
     }
 

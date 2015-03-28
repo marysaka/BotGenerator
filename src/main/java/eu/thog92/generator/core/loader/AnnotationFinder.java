@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -88,12 +91,32 @@ public class AnnotationFinder
 
     private Map<String, Class> start()
     {
+        // Add modules dir to classpath
+        URLClassLoader systemClassLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+        Class<URLClassLoader> classLoaderClass = URLClassLoader.class;
+        File moduleDir = new File("modules");
+        if(!moduleDir.exists())
+            moduleDir.mkdirs();
+        for(File file : moduleDir.listFiles())
+        {
+            if(file.getName().endsWith(".jar"))
+            {
+                try {
+                    Method method = classLoaderClass.getDeclaredMethod("addURL", new Class[]{URL.class});
+                    method.setAccessible(true);
+                    method.invoke(systemClassLoader, new Object[]{file.toURI().toURL()});
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
+            }
+        }
         Map<String, Class> classes = new HashMap<>();
 
         try
         {
-            for (String classpathEntry : System.getProperty("java.class.path").split(System.getProperty("path.separator")))
+            for (URL url : systemClassLoader.getURLs())
             {
+                String classpathEntry = url.getPath().replace("%20", " ");
                 System.out.println("Scanning " + classpathEntry);
                 File entryFile = new File(classpathEntry);
                 if (classpathEntry.endsWith(".jar"))
