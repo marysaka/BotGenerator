@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class BotGeneratorImpl extends BotGenerator
 {
-    private List<String> activesAddons = new ArrayList<>();
+    private final List<String> activesAddons = new ArrayList<>();
     private AnnotationFinder loader;
 
     private BotGeneratorImpl() throws IllegalAccessException, IOException

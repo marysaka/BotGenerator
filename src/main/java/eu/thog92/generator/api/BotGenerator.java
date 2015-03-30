@@ -3,8 +3,6 @@ package eu.thog92.generator.api;
 import eu.thog92.generator.api.events.EventBus;
 import eu.thog92.generator.api.tasks.ITaskManager;
 
-import java.io.IOException;
-
 public abstract class BotGenerator
 {
     private static BotGenerator instance;

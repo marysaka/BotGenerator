@@ -16,8 +16,8 @@ public class GeneratorTask implements ITask<String>
             + "(.*?)" + Pattern.quote("]"));
 
     private static final Pattern RANGE_REGEX = Pattern.compile("[0-9]+\\.\\.\\.[0-9]+");
-    private Dictionary dictionary;
-    private Random rand;
+    private final Dictionary dictionary;
+    private final Random rand;
 
     public GeneratorTask(Dictionary dictionary)
     {

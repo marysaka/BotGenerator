@@ -5,10 +5,10 @@ import eu.thog92.generator.api.BotGenerator;
 public abstract class ScheduledTask implements ITask<Boolean>, Runnable
 {
 
-    protected final BotGenerator botGenerator;
-    protected boolean isCancelled;
+    private final BotGenerator botGenerator;
+    private boolean isCancelled;
     protected int delay;
-    protected ITaskManager manager;
+    private final ITaskManager manager;
 
     public ScheduledTask()
     {

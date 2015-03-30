@@ -21,7 +21,7 @@ public class AnnotationFinder
 
     private final List<String> blackListedPackage = new ArrayList<>();
 
-    private HashMap<String, Module> annotCache = new HashMap<>();
+    private final HashMap<String, Module> annotCache = new HashMap<>();
 
     public AnnotationFinder()
     {

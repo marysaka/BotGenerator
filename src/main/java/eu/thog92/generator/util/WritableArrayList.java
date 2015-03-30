@@ -11,7 +11,7 @@ public class WritableArrayList<E> extends ArrayList<E>
 {
 
     private static final long serialVersionUID = 7959171795250720924L;
-    private File file;
+    private final File file;
 
     public WritableArrayList(Collection<? extends E> c, File file)
     {

@@ -33,10 +33,10 @@ public class EventBus
 
             } catch (IllegalAccessException ignored)
             {
-                ignored.printStackTrace();
+
             } catch (InvocationTargetException ignored)
             {
-                ignored.printStackTrace();
+
             }
         }
         return true;

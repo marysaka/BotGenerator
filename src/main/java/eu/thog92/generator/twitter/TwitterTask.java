@@ -12,7 +12,7 @@ public class TwitterTask extends ScheduledTask
     private final String endOfSentence;
     private final GeneratorTask generatorTask;
     private int numTweets;
-    private Twitter twitter;
+    private final Twitter twitter;
 
     public TwitterTask(Twitter twitter, GeneratorTask generatorTask, boolean sendTweetOnStartup, String endOfSentence)
     {

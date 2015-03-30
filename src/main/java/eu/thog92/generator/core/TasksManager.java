@@ -21,7 +21,7 @@ public class TasksManager implements ITaskManager
     private ScheduledExecutorService scheduler = Executors
             .newScheduledThreadPool(4);
 
-    private HashMap<ScheduledTask, ScheduledFuture<?>> activeTasks = new HashMap<>();
+    private final HashMap<ScheduledTask, ScheduledFuture<?>> activeTasks = new HashMap<>();
 
     public void scheduleTask(ScheduledTask task)
     {
