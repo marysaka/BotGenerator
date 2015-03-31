@@ -12,7 +12,12 @@ public class Configuration
 
     public Configuration(File baseDir, String name)
     {
-        this.configFile = new File(baseDir, name + File.separator + name.toLowerCase() + ".json");
+        this(baseDir, name, name.toLowerCase());
+    }
+
+    public Configuration(File baseDir, String configDir, String configName)
+    {
+        this.configFile = new File(baseDir, configDir + File.separator + configName.toLowerCase() + ".json");
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 

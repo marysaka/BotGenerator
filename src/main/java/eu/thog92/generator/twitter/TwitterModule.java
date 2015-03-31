@@ -3,17 +3,15 @@ package eu.thog92.generator.twitter;
 
 import eu.thog92.generator.api.annotations.Module;
 import eu.thog92.generator.api.annotations.SubscribeEvent;
-import eu.thog92.generator.api.config.Configuration;
 import eu.thog92.generator.api.events.InitEvent;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
-@Module(name = "twitter", version = "1.0")
+@Module(name = "twitter", version = "1.1")
 public class TwitterModule
 {
     private static TwitterModule instance;
-    private Twitter twitter;
 
     public TwitterModule()
     {
@@ -23,24 +21,7 @@ public class TwitterModule
     @SubscribeEvent
     public void init(InitEvent event)
     {
-        Configuration configuration = new Configuration(event.getConfigDir(), "twitter");
-        TwitterConfiguration config = configuration.readFromFile(TwitterConfiguration.class);
-        if (config == null)
-        {
-            System.err.println("A new twitter config have been created! Complete it before restart.");
-            configuration.saveToDisk(new TwitterConfiguration("", "", "", "", ""));
-            System.exit(666);
-        }
 
-
-        ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(config.debug)
-                .setOAuthConsumerKey(config.consumerKey)
-                .setOAuthConsumerSecret(config.consumerSecret)
-                .setOAuthAccessToken(config.accessToken)
-                .setOAuthAccessTokenSecret(config.accessTokenSecret);
-        TwitterFactory tf = new TwitterFactory(cb.build());
-        this.twitter = tf.getInstance();
     }
 
 
@@ -49,8 +30,15 @@ public class TwitterModule
         return instance;
     }
 
-    public Twitter getTwitter()
+    public Twitter createTwitterInstance(boolean debug, String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret)
     {
-        return twitter;
+        ConfigurationBuilder cb = new ConfigurationBuilder();
+        cb.setDebugEnabled(debug)
+                .setOAuthConsumerKey(consumerKey)
+                .setOAuthConsumerSecret(consumerSecret)
+                .setOAuthAccessToken(accessToken)
+                .setOAuthAccessTokenSecret(accessTokenSecret);
+        TwitterFactory tf = new TwitterFactory(cb.build());
+        return tf.getInstance();
     }
 }
