@@ -14,7 +14,6 @@ repositories {
 
 configurations {
     core {}
-    twitter {}
 }
 
 if (System.env.BUILD_NUMBER != null)  version = "$version.$System.env.BUILD_NUMBER"
@@ -23,13 +22,14 @@ dependencies {
     compile 'org.twitter4j:twitter4j-core:4.0.2'
     compile 'com.google.code.gson:gson:2.3.1'
     core 'com.google.code.gson:gson:2.3.1'
-    twitter 'org.twitter4j:twitter4j-core:4.0.2'
 }
 
 
 
 jar {
     from { configurations.core.collect { it.isDirectory() ? it : zipTree(it) } }
+    exclude 'eu/thog92/generator/twitter/**'
+
     manifest {
         attributes 'Main-Class': mainClassName
     }
@@ -43,8 +43,8 @@ task apiJar(type: Jar, dependsOn: classes) {
 
 task twitterJar(type: Jar, dependsOn: classes) {
 
-    from { configurations.twitter.collect { it.isDirectory() ? it : zipTree(it) } }
-    include '**'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    include 'twitter4j/**'
 
     from sourceSets.main.output
     include 'eu/thog92/generator/twitter/**'

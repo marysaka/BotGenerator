@@ -16,14 +16,14 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-public class AnnotationFinder
+public class ModuleFinder
 {
 
     private final List<String> blackListedPackage = new ArrayList<>();
 
     private final HashMap<String, Module> annotCache = new HashMap<>();
 
-    public AnnotationFinder()
+    public ModuleFinder()
     {
         blackListedPackage.add("oracle");
         blackListedPackage.add("com/oracle");
@@ -95,17 +95,19 @@ public class AnnotationFinder
         URLClassLoader systemClassLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
         Class<URLClassLoader> classLoaderClass = URLClassLoader.class;
         File moduleDir = new File("modules");
-        if(!moduleDir.exists())
+        if (!moduleDir.exists())
             moduleDir.mkdirs();
-        for(File file : moduleDir.listFiles())
+        for (File file : moduleDir.listFiles())
         {
-            if(file.getName().endsWith(".jar"))
+            if (file.getName().endsWith(".jar"))
             {
-                try {
+                try
+                {
                     Method method = classLoaderClass.getDeclaredMethod("addURL", new Class[]{URL.class});
                     method.setAccessible(true);
                     method.invoke(systemClassLoader, new Object[]{file.toURI().toURL()});
-                } catch (Throwable t) {
+                } catch (Throwable t)
+                {
                     t.printStackTrace();
                 }
             }

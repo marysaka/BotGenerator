@@ -6,9 +6,9 @@ public abstract class ScheduledTask implements ITask<Boolean>, Runnable
 {
 
     private final BotGenerator botGenerator;
-    private boolean isCancelled;
-    protected int delay;
     private final ITaskManager manager;
+    protected int delay;
+    private boolean isCancelled;
 
     public ScheduledTask()
     {

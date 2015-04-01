@@ -18,16 +18,15 @@ public class TwitterModule
         instance = this;
     }
 
+    public static TwitterModule getInstance()
+    {
+        return instance;
+    }
+
     @SubscribeEvent
     public void init(InitEvent event)
     {
 
-    }
-
-
-    public static TwitterModule getInstance()
-    {
-        return instance;
     }
 
     public Twitter createTwitterInstance(boolean debug, String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret)

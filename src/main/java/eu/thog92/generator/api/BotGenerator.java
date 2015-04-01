@@ -21,6 +21,10 @@ public abstract class BotGenerator
         this.httpServerManager = httpServerManager;
     }
 
+    public static BotGenerator getInstance()
+    {
+        return instance;
+    }
 
     public void init()
     {
@@ -40,12 +44,6 @@ public abstract class BotGenerator
     }
 
     protected abstract void initModules();
-
-
-    public static BotGenerator getInstance()
-    {
-        return instance;
-    }
 
     public ITaskManager getTasksManager()
     {

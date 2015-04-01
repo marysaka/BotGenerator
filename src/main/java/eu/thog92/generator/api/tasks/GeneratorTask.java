@@ -1,6 +1,5 @@
 package eu.thog92.generator.api.tasks;
 
-import eu.thog92.generator.api.tasks.ITask;
 import eu.thog92.generator.api.Dictionary;
 import eu.thog92.generator.util.WritableArrayList;
 

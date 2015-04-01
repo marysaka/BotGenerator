@@ -5,8 +5,6 @@ import eu.thog92.generator.api.tasks.ITaskManager;
 import eu.thog92.generator.api.tasks.ScheduledTask;
 import twitter4j.Twitter;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -16,12 +14,11 @@ import java.util.concurrent.TimeUnit;
 public class TasksManager implements ITaskManager
 {
 
+    private final HashMap<ScheduledTask, ScheduledFuture<?>> activeTasks = new HashMap<>();
     private Twitter twitter;
     private Dictionary dictionary;
     private ScheduledExecutorService scheduler = Executors
             .newScheduledThreadPool(4);
-
-    private final HashMap<ScheduledTask, ScheduledFuture<?>> activeTasks = new HashMap<>();
 
     public void scheduleTask(ScheduledTask task)
     {

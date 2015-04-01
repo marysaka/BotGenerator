@@ -7,7 +7,7 @@ import eu.thog92.generator.api.events.InitEvent;
 import eu.thog92.generator.core.TasksManager;
 import eu.thog92.generator.core.exception.ModuleInitializationException;
 import eu.thog92.generator.core.http.HttpServerManager;
-import eu.thog92.generator.core.loader.AnnotationFinder;
+import eu.thog92.generator.core.loader.ModuleFinder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.Map;
 public class BotGeneratorImpl extends BotGenerator
 {
     private final List<String> activesAddons = new ArrayList<>();
-    private AnnotationFinder loader;
+    private ModuleFinder loader;
 
     private BotGeneratorImpl() throws IllegalAccessException, IOException
     {
@@ -42,7 +42,7 @@ public class BotGeneratorImpl extends BotGenerator
     protected void initModules()
     {
         long startTime = System.currentTimeMillis();
-        loader = new AnnotationFinder();
+        loader = new ModuleFinder();
         Map<String, Class> modules = loader.search();
         System.out.println("Found " + modules.size() + " modules");
         eventBus = new EventBus();
