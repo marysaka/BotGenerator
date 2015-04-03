@@ -4,7 +4,7 @@ import eu.thog92.generator.api.BotGenerator;
 
 import java.io.File;
 
-public class InitEvent extends Event
+public class InitEvent implements IEvent
 {
     private final BotGenerator botGenerator;
     private final File configDir;

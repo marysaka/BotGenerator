@@ -12,7 +12,7 @@ import java.util.List;
 public class EventBus
 {
 
-    private final HashMap<Class<Event>, List<Method>> eventMethodHashMap = new HashMap<>();
+    private final HashMap<Class<IEvent>, List<Method>> eventMethodHashMap = new HashMap<>();
     private final HashMap<Class, List<Object>> objectHashMap = new HashMap<>();
 
     public boolean post(Object object)
@@ -56,7 +56,7 @@ public class EventBus
                 if (annotation.annotationType() == SubscribeEvent.class)
                 {
                     Class param = method.getParameterTypes()[0];
-                    if (param.getSuperclass().isAssignableFrom(Event.class))
+                    if (param.getSuperclass().isAssignableFrom(IEvent.class))
                     {
                         if (eventMethodHashMap.get(param) == null)
                         {

@@ -25,7 +25,7 @@ public class WritableArrayList<E> extends ArrayList<E>
         boolean result = super.add((E) s);
         if (result)
         {
-            BufferedWriter out = null;
+            BufferedWriter out;
             try
             {
                 out = new BufferedWriter(new FileWriter(file.getAbsolutePath(),

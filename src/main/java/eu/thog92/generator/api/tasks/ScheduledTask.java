@@ -38,7 +38,7 @@ public abstract class ScheduledTask implements ITask<Boolean>, Runnable
         return isCancelled;
     }
 
-    protected void cancel()
+    public void cancel()
     {
         this.isCancelled = true;
     }

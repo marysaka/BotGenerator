@@ -61,4 +61,9 @@ public abstract class BotGenerator
         return httpServerManager;
     }
 
+    public String getAPIVersion()
+    {
+        return "1.1";
+    }
+
 }

@@ -10,6 +10,7 @@ public class Configuration
     private final File configFile;
     private final Gson gson;
 
+    @Deprecated
     public Configuration(File baseDir, String name)
     {
         this(baseDir, name, name.toLowerCase());

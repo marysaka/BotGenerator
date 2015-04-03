@@ -1,9 +1,7 @@
 package eu.thog92.generator.core;
 
-import eu.thog92.generator.api.Dictionary;
 import eu.thog92.generator.api.tasks.ITaskManager;
 import eu.thog92.generator.api.tasks.ScheduledTask;
-import twitter4j.Twitter;
 
 import java.util.HashMap;
 import java.util.concurrent.Executors;
@@ -15,8 +13,6 @@ public class TasksManager implements ITaskManager
 {
 
     private final HashMap<ScheduledTask, ScheduledFuture<?>> activeTasks = new HashMap<>();
-    private Twitter twitter;
-    private Dictionary dictionary;
     private ScheduledExecutorService scheduler = Executors
             .newScheduledThreadPool(4);
 

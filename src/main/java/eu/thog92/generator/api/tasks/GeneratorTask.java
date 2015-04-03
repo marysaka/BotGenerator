@@ -142,17 +142,16 @@ public class GeneratorTask implements ITask<String>
 
     private boolean checkForAllOneDigit(int value)
     {
-        int manipulatedValue = value;
-        int digit = manipulatedValue % 10;
-        manipulatedValue = manipulatedValue / 10;
-        while (manipulatedValue > 0)
+        int digit = value % 10;
+        value = value / 10;
+        while (value > 0)
         {
-            if (manipulatedValue % 10 != digit)
+            if (value % 10 != digit)
             {
                 return false;
             }
-            manipulatedValue = manipulatedValue / 10;
+            value = value / 10;
         }
-        return value != 0;
+        return true;
     }
 }
