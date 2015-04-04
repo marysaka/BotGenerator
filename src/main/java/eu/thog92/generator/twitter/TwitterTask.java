@@ -50,8 +50,8 @@ public class TwitterTask extends ScheduledTask
                     + "s for the next tweet");
         } catch (StackOverflowError e)
         {
-            System.err.println("No more drama available! Exiting!");
-            System.exit(42);
+            System.err.println("No more drama sentences available! Stopping task!");
+            return false;
         } catch (TwitterException e)
         {
             e.printStackTrace();

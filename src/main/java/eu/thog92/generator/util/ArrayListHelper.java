@@ -12,11 +12,10 @@ public class ArrayListHelper
             throws IOException
     {
 
-        // System.out.println("Loading " + file.replaceAll(".txt", "") + "...");
         ArrayList<String> tmp = new ArrayList<>();
         BufferedReader fileIn = new BufferedReader(new FileReader(file));
 
-        String entry = null;
+        String entry;
 
         while ((entry = fileIn.readLine()) != null)
         {

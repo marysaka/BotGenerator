@@ -2,8 +2,6 @@ package eu.thog92.generator.twitter;
 
 
 import eu.thog92.generator.api.annotations.Module;
-import eu.thog92.generator.api.annotations.SubscribeEvent;
-import eu.thog92.generator.api.events.InitEvent;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
@@ -23,11 +21,6 @@ public class TwitterModule
         return instance;
     }
 
-    @SubscribeEvent
-    public void init(InitEvent event)
-    {
-
-    }
 
     public Twitter createTwitterInstance(boolean debug, String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret)
     {
