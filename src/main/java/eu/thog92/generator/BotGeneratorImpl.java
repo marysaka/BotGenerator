@@ -41,7 +41,6 @@ public class BotGeneratorImpl extends BotGenerator
     @Override
     protected void initModules()
     {
-        long startTime = System.currentTimeMillis();
         loader = new ModuleFinder();
         Map<String, Class> modules = loader.search();
         System.out.println("Found " + modules.size() + " modules");
@@ -59,20 +58,17 @@ public class BotGeneratorImpl extends BotGenerator
 
         this.eventBus.post(new InitEvent());
         System.out.println("Active modules " + activesAddons.size());
-
-
-        //System.out.println((System.currentTimeMillis() - startTime) + "ms");
     }
 
     private void loadModule(Map<String, Class> modules, String name) throws ModuleInitializationException
     {
-        if (activesAddons.contains(name) || name.equals(" ") || name.equals("")) return;
+        if (activesAddons.contains(name) || name.equals(" ") || name.isEmpty()) return;
 
         Module annot = loader.getAnnotFromClass(name);
         if (annot == null)
             throw new ModuleInitializationException(name + " not found!");
 
-        if (annot.dependencies() != "")
+        if (!annot.dependencies().isEmpty())
         {
             for (String dependency : annot.dependencies().split("after:"))
             {
@@ -84,10 +80,10 @@ public class BotGeneratorImpl extends BotGenerator
             eventBus.register(modules.get(name).newInstance());
         } catch (InstantiationException e)
         {
-            e.printStackTrace();
+            throw new ModuleInitializationException(e);
         } catch (IllegalAccessException e)
         {
-            e.printStackTrace();
+            throw new ModuleInitializationException(e);
         }
         activesAddons.add(annot.name());
     }

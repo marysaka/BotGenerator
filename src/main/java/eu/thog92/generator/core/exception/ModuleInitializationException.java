@@ -8,4 +8,9 @@ public class ModuleInitializationException extends IOException
     {
         super(s);
     }
+
+    public ModuleInitializationException(Exception e)
+    {
+        super(e);
+    }
 }
