@@ -5,15 +5,13 @@ import eu.thog92.generator.api.BotGenerator;
 public abstract class ScheduledTask implements ITask<Boolean>, Runnable
 {
 
-    private final BotGenerator botGenerator;
     private final ITaskManager manager;
     protected int delay;
     private boolean isCancelled;
 
     public ScheduledTask()
     {
-        this.botGenerator = BotGenerator.getInstance();
-        this.manager = botGenerator.getTasksManager();
+        this.manager = BotGenerator.getInstance().getTasksManager();
     }
 
     @Override

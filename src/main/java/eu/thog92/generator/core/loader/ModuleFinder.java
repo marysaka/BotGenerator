@@ -21,24 +21,26 @@ public class ModuleFinder
 
     private final List<String> blackListedPackage = new ArrayList<>();
 
-    private final HashMap<String, Module> annotCache = new HashMap<>();
+    private final HashMap<String, Module> annotationCache = new HashMap<>();
 
     public ModuleFinder()
     {
-        blackListedPackage.add("oracle");
+        blackListedPackage.add("com/intellij");
         blackListedPackage.add("com/oracle");
         blackListedPackage.add("com/sun");
-        blackListedPackage.add("org/w3c");
-        blackListedPackage.add("org/xml");
-        blackListedPackage.add("org/omg");
-        blackListedPackage.add("org/jcp");
-        blackListedPackage.add("sun/");
+        blackListedPackage.add("com/google");
         blackListedPackage.add("java/");
         blackListedPackage.add("javafx/");
         blackListedPackage.add("javax/");
         blackListedPackage.add("jdk/");
+        blackListedPackage.add("netscape");
+        blackListedPackage.add("oracle");
+        blackListedPackage.add("org/jcp");
+        blackListedPackage.add("org/omg");
+        blackListedPackage.add("org/xml");
+        blackListedPackage.add("org/w3c");
+        blackListedPackage.add("sun/");
         blackListedPackage.add("twitter4j/");
-        blackListedPackage.add("com/intellij");
     }
 
     private Map<String, Class> findClasses(File directory, String packageName)
@@ -52,8 +54,8 @@ public class ModuleFinder
         {
             return classes;
         }
-        File[] files = directory.listFiles();
-        for (File file : files)
+
+        for (File file : directory.listFiles())
         {
             if (file.isDirectory())
             {
@@ -68,7 +70,7 @@ public class ModuleFinder
                     {
                         Module module = (Module) clazz.getAnnotation(Module.class);
                         classes.put(module.name(), clazz);
-                        this.annotCache.put(module.name(), module);
+                        this.annotationCache.put(module.name(), module);
                     }
 
                 } catch (ClassNotFoundException ignored)
@@ -86,7 +88,7 @@ public class ModuleFinder
 
     public Module getAnnotFromClass(String name)
     {
-        return this.annotCache.get(name);
+        return this.annotationCache.get(name);
     }
 
     private Map<String, Class> start()
@@ -103,9 +105,9 @@ public class ModuleFinder
             {
                 try
                 {
-                    Method method = classLoaderClass.getDeclaredMethod("addURL", new Class[]{URL.class});
+                    Method method = classLoaderClass.getDeclaredMethod("addURL", URL.class);
                     method.setAccessible(true);
-                    method.invoke(systemClassLoader, new Object[]{file.toURI().toURL()});
+                    method.invoke(systemClassLoader, file.toURI().toURL());
                 } catch (Throwable t)
                 {
                     t.printStackTrace();
@@ -144,7 +146,7 @@ public class ModuleFinder
                                     Module module = (Module) clazz.getAnnotation(Module.class);
                                     classes.put(module.name(), clazz);
 
-                                    this.annotCache.put(module.name(), module);
+                                    this.annotationCache.put(module.name(), module);
                                 }
 
 
@@ -158,10 +160,7 @@ public class ModuleFinder
                 // Support IDE and Gradle class dirs
                 else if (entryFile.exists() && entryFile.isDirectory())
                 {
-                    for (File file : entryFile.listFiles())
-                    {
-                        classes.putAll(findClasses(entryFile, ""));
-                    }
+                    classes.putAll(findClasses(entryFile, ""));
                 }
             }
         } catch (IOException e)

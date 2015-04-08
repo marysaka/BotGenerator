@@ -31,10 +31,7 @@ public class EventBus
                     method.invoke(toCall, object);
                 }
 
-            } catch (IllegalAccessException ignored)
-            {
-
-            } catch (InvocationTargetException ignored)
+            } catch (IllegalAccessException | InvocationTargetException ignored)
             {
 
             }

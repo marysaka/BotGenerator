@@ -14,11 +14,12 @@ public class HttpServerManager implements IHttpServerManager
 
     public HttpServer createHTTPServer(int port) throws IOException
     {
+        ResourceHandler resourcesHandler = new ResourceHandler();
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-        server.createContext("/", new ResourceHandler());
+        server.createContext("/", resourcesHandler);
         server.setExecutor(null); // creates a default executor
 
-        BotGenerator.getInstance().getEventBus().post(new HttpStartEvent(server));
+        BotGenerator.getInstance().getEventBus().post(new HttpStartEvent(server, resourcesHandler));
         server.start();
 
         return server;

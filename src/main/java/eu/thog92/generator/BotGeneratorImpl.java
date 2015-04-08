@@ -29,10 +29,7 @@ public class BotGeneratorImpl extends BotGenerator
         try
         {
             new BotGeneratorImpl().init();
-        } catch (IllegalAccessException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e)
+        } catch (IllegalAccessException | IOException e)
         {
             e.printStackTrace();
         }
@@ -57,7 +54,7 @@ public class BotGeneratorImpl extends BotGenerator
         }
 
         this.eventBus.post(new InitEvent());
-        System.out.println("Active modules " + activesAddons.size());
+        System.out.println("Active modules: " + activesAddons.size() + " " +  modules.keySet());
     }
 
     private void loadModule(Map<String, Class> modules, String name) throws ModuleInitializationException
