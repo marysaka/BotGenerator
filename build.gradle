@@ -16,7 +16,7 @@ configurations {
     core {}
 }
 
-if (System.env.BUILD_NUMBER != null)  version = "$version.$System.env.BUILD_NUMBER"
+if (System.env.BUILD_NUMBER != null) version = "$version.$System.env.BUILD_NUMBER"
 
 dependencies {
     compile 'org.twitter4j:twitter4j-core:4.0.2'
