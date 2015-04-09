@@ -93,7 +93,7 @@ public class IRCClient
                         String channel = line.substring(line.indexOf("#"), line.indexOf(":", line.indexOf("#")));
                         String str = "PRIVMSG " + channel + ":";
                         str = line.substring(line.indexOf(str) + str.length());
-                        printStream.println("<" + sender + "> " + str);
+                        printStream.println("[" + channel + "] <" + sender + "> " + str);
                         eventBus.post(new IRCChannelMessage(instance, channel, sender, str));
                     }
                     else if (line.contains("PRIVMSG " + username))
@@ -101,6 +101,7 @@ public class IRCClient
                         String sender = line.substring(1, line.indexOf("!"));
                         String str = "PRIVMSG " + sender + ":";
                         str = line.substring(line.indexOf(str) + str.length());
+                        printStream.println("<" + sender + "> " + str);
                         eventBus.post(new IRCPrivateMessage(instance, sender, str));
                     }
                     else
