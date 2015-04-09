@@ -42,7 +42,7 @@ public class TwitterTask extends ScheduledTask
 
         System.out.println(result);
 
-        /*try
+        try
         {
             System.out.println("Sending to Twitter...");
             twitter.updateStatus(result);
@@ -55,7 +55,7 @@ public class TwitterTask extends ScheduledTask
         } catch (TwitterException e)
         {
             e.printStackTrace();
-        }*/
+        }
         return true;
     }
 

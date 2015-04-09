@@ -9,7 +9,6 @@ import eu.thog92.generator.api.events.irc.IRCReady;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class IRCClient
@@ -46,6 +45,11 @@ public class IRCClient
         return this;
     }
 
+    public IRCClient setPrintStream(PrintStream printStream)
+    {
+        this.printStream = printStream;
+        return this;
+    }
     private void startLoop()
     {
         final IRCClient instance = this;
@@ -61,6 +65,10 @@ public class IRCClient
                         // We are now logged in.
                         printStream.println("Logged in!");
                         eventBus.post(new IRCReady(instance));
+                        for(String channel : channels)
+                        {
+                            joinChannel(channel);
+                        }
                         break;
                     } else if (line.startsWith("PING"))
                     {
@@ -70,11 +78,6 @@ public class IRCClient
                         printStream.println("Nickname is already in use.");
                         return;
                     }
-                }
-
-                for(String channel : channels)
-                {
-                    instance.join(channel);
                 }
 
                 // Keep reading lines from the server.
@@ -126,14 +129,9 @@ public class IRCClient
     }
 
 
-    public IRCClient join(final String channel)
+    public IRCClient joinChannel(final String channel)
     {
-        if (this.channels.contains(channel))
-            return this;
-
         writeToBuffer("JOIN " + channel + "\r\n");
-
-        this.channels.add(channel);
         return this;
     }
 
@@ -211,25 +209,16 @@ public class IRCClient
 
     public void pong(final String id, final boolean space)
     {
-        new Thread()
+        printStream.println(id);
+        try
         {
-
-            public void run()
-            {
-                // TODO Auto-generated method stub
-                printStream.println(id);
-                try
-                {
-                    if (space) out.write("PONG " + id + "\r\n");
-                    else out.write(id.replace("PING", "PONG"));
-                    out.flush();
-                } catch (IOException e)
-                {
-                    System.err.println("Error while pong " + id);
-                }
-            }
-        }.start();
-
+            if (space) out.write("PONG " + id + "\r\n");
+            else out.write(id.replace("PING", "PONG"));
+            out.flush();
+        } catch (IOException e)
+        {
+            System.err.println("Error while pong " + id);
+        }
     }
 
     public List<String> getChannelList()
