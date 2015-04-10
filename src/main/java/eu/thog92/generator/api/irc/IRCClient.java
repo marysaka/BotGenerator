@@ -38,6 +38,8 @@ public class IRCClient
     public IRCClient connect() throws IOException
     {
         this.socket = new Socket(host, port);
+        this.socket.setKeepAlive(true);
+        this.socket.setSoTimeout(200);
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         this.login();
@@ -83,7 +85,7 @@ public class IRCClient
                 // Keep reading lines from the server.
                 while ((line = getLastLine()) != null)
                 {
-                    if (line.toLowerCase().contains("ping"))
+                    if (line.startsWith("PING"))
                     {
                         // We must respond to PINGs to avoid being disconnected.
                         pong(line, false);
@@ -203,6 +205,7 @@ public class IRCClient
             return in.readLine();
         } catch (IOException e)
         {
+            e.printStackTrace();
             return null;
         }
     }
@@ -218,7 +221,7 @@ public class IRCClient
             out.flush();
         } catch (IOException e)
         {
-            System.err.println("Error while pong " + id);
+            System.err.println("Error while pong " + id + " (" + e +")");
         }
     }
 
