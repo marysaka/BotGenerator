@@ -39,7 +39,7 @@ public class IRCClient
     {
         this.socket = new Socket(host, port);
         this.socket.setKeepAlive(true);
-        this.socket.setSoTimeout(200);
+        this.socket.setSoTimeout(200000);
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         this.login();
