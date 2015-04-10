@@ -146,7 +146,7 @@ public class IRCClient
     }
 
 
-    public IRCClient quit(String reason)
+    public IRCClient quit(final String reason)
     {
         new Thread()
         {
