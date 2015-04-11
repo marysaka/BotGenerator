@@ -95,7 +95,7 @@ public class IRCClient
                         String channel = line.substring(line.indexOf("#"), line.indexOf(":", line.indexOf("#")));
                         String str = "PRIVMSG " + channel + ":";
                         str = line.substring(line.indexOf(str) + str.length());
-                        printStream.println("[" + channel + "] <" + sender + "> " + str);
+                        printStream.println("[" + channel.replaceAll(" ", "") + "] <" + sender + "> " + str);
                         eventBus.post(new IRCChannelMessage(instance, channel, sender, str));
                     }
                     else if (line.contains("PRIVMSG " + username))
@@ -148,7 +148,7 @@ public class IRCClient
     }
 
 
-    public IRCClient quit(String reason)
+    public IRCClient quit(final String reason)
     {
         new Thread()
         {
@@ -157,7 +157,7 @@ public class IRCClient
             {
                 try
                 {
-                    out.write("QUIT Bye!\r\n");
+                    out.write("QUIT " + reason + "\r\n");
                     out.flush();
                 } catch (IOException e)
                 {
