@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 public class TasksManager implements ITaskManager
 {
 
-    private final HashMap<ScheduledTask, ScheduledFuture<?>> activeTasks = new HashMap<>();
+    private final HashMap<ScheduledTask, ScheduledFuture<?>> activeTasks = new HashMap<ScheduledTask, ScheduledFuture<?>>();
     private ScheduledExecutorService scheduler = Executors
             .newScheduledThreadPool(4);
 

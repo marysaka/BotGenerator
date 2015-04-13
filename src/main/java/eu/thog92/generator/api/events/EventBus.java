@@ -12,8 +12,8 @@ import java.util.List;
 public class EventBus
 {
 
-    private final HashMap<Class<IEvent>, List<Method>> eventMethodHashMap = new HashMap<>();
-    private final HashMap<Class, List<Object>> objectHashMap = new HashMap<>();
+    private final HashMap<Class<IEvent>, List<Method>> eventMethodHashMap = new HashMap<Class<IEvent>, List<Method>>();
+    private final HashMap<Class, List<Object>> objectHashMap = new HashMap<Class, List<Object>>();
 
     public boolean post(Object object)
     {
@@ -31,9 +31,12 @@ public class EventBus
                     method.invoke(toCall, object);
                 }
 
-            } catch (IllegalAccessException | InvocationTargetException ignored)
+            } catch (IllegalAccessException e)
             {
-                ignored.printStackTrace();
+                e.printStackTrace();
+            } catch (InvocationTargetException e)
+            {
+                e.printStackTrace();
             }
         }
         return true;
@@ -57,11 +60,11 @@ public class EventBus
                     {
                         if (eventMethodHashMap.get(param) == null)
                         {
-                            eventMethodHashMap.put(param, new ArrayList<>());
+                            eventMethodHashMap.put(param, new ArrayList<Method>());
                         }
                         if (objectHashMap.get(clazz) == null)
                         {
-                            objectHashMap.put(clazz, new ArrayList<>());
+                            objectHashMap.put(clazz, new ArrayList<Object>());
                         }
 
                         if (!objectHashMap.get(clazz).contains(object))

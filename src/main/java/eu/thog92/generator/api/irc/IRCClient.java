@@ -31,7 +31,7 @@ public class IRCClient
         this.port = port;
         this.printStream = System.out;
         this.eventBus = BotGenerator.getInstance().getEventBus();
-        this.channels = new ArrayList<>();
+        this.channels = new ArrayList<String>();
     }
 
 

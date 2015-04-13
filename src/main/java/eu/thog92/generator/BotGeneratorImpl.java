@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class BotGeneratorImpl extends BotGenerator
 {
-    private final List<String> activesAddons = new ArrayList<>();
+    private final List<String> activesAddons = new ArrayList<String>();
     private ModuleFinder loader;
 
     private BotGeneratorImpl() throws IllegalAccessException, IOException
@@ -29,7 +29,10 @@ public class BotGeneratorImpl extends BotGenerator
         try
         {
             new BotGeneratorImpl().init();
-        } catch (IllegalAccessException | IOException e)
+        } catch (IllegalAccessException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e)
         {
             e.printStackTrace();
         }

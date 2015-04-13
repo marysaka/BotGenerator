@@ -19,7 +19,7 @@ public class Dictionary
         if (!dicDir.exists())
             throw new IOException(dicDir.getAbsolutePath() + " directory doesn't exist!");
 
-        this.dictionary = new HashMap<>();
+        this.dictionary = new HashMap<String, ArrayList<String>>();
         System.out.println("Loading Files...");
         for (String file : dicDir.list())
         {
@@ -60,6 +60,6 @@ public class Dictionary
             blackListFile.createNewFile();
         }
 
-        dictionary.put(blackListFile.getName().replace(".txt", ""), new WritableArrayList<>(ArrayListHelper.loadStringArrayFromFile(blackListFile.getAbsolutePath()), blackListFile));
+        dictionary.put(blackListFile.getName().replace(".txt", ""), new WritableArrayList<String>(ArrayListHelper.loadStringArrayFromFile(blackListFile.getAbsolutePath()), blackListFile));
     }
 }
