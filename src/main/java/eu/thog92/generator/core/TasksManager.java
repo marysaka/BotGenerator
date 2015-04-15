@@ -23,12 +23,6 @@ public class TasksManager implements ITaskManager
                 task.getDelay(), TimeUnit.SECONDS));
     }
 
-    public void resetExecutorService()
-    {
-        scheduler.shutdownNow();
-        scheduler = Executors.newScheduledThreadPool(100);
-    }
-
     public void onFinishTask(ScheduledTask task)
     {
         if (task.isCancelled())

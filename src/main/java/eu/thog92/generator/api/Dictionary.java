@@ -35,18 +35,6 @@ public class Dictionary
         return dictionary.get(target);
     }
 
-    public void reload()
-    {
-        try
-        {
-            this.loadCombinations();
-            this.loadBlackList();
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
     public void setDir(File dir)
     {
         this.dicDir = dir;
@@ -56,9 +44,7 @@ public class Dictionary
     {
         File blackListFile = new File(dicDir.getParentFile(), "blacklist.txt");
         if (!blackListFile.exists())
-        {
             blackListFile.createNewFile();
-        }
 
         dictionary.put(blackListFile.getName().replace(".txt", ""), new WritableArrayList<String>(ArrayListHelper.loadStringArrayFromFile(blackListFile.getAbsolutePath()), blackListFile));
     }

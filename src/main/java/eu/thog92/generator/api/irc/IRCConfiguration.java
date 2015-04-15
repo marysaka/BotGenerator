@@ -1,8 +1,6 @@
 package eu.thog92.generator.api.irc;
 
-/**
- * Created by Thog92 on 09/04/2015.
- */
+
 public class IRCConfiguration
 {
     public boolean enabled;
