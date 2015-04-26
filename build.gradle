@@ -24,14 +24,13 @@ if (System.env.BUILD_NUMBER != null) version = "$version.$System.env.BUILD_NUMBE
 dependencies {
     compile 'org.twitter4j:twitter4j-core:4.0.2'
     compile 'com.google.code.gson:gson:2.3.1'
-    core 'com.google.code.gson:gson:2.3.1'
 }
 
 
 
 jar {
-    from { configurations.core.collect { it.isDirectory() ? it : zipTree(it) } }
-    exclude 'eu/thog92/generator/twitter/**'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    include '**'
 
     manifest {
         attributes 'Main-Class': mainClassName
@@ -44,18 +43,6 @@ task apiJar(type: Jar, dependsOn: classes) {
     classifier = 'api'
 }
 
-task twitterJar(type: Jar, dependsOn: classes) {
-
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    include 'twitter4j/**'
-
-    from sourceSets.main.output
-    include 'eu/thog92/generator/twitter/**'
-
-    classifier = "twitter"
-}
-
 artifacts {
     archives apiJar
-    archives twitterJar
 }

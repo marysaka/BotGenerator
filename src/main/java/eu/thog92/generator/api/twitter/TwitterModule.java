@@ -1,4 +1,4 @@
-package eu.thog92.generator.twitter;
+package eu.thog92.generator.api.twitter;
 
 
 import eu.thog92.generator.api.annotations.Module;
