@@ -14,9 +14,9 @@ public class TwitterTask extends ScheduledTask
     private final Twitter twitter;
     private int numTweets;
 
-    public TwitterTask(Twitter twitter, GeneratorTask generatorTask, boolean sendTweetOnStartup, String endOfSentence)
+    public TwitterTask(Object twitter, GeneratorTask generatorTask, boolean sendTweetOnStartup, String endOfSentence)
     {
-        this.twitter = twitter;
+        this.twitter = (Twitter)twitter;
         this.generatorTask = generatorTask;
         this.sendTweetOnStartup = sendTweetOnStartup;
         this.endOfSentence = endOfSentence;

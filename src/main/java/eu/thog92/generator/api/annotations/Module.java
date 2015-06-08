@@ -12,7 +12,7 @@ public @interface Module
 {
     String name();
 
-    String version() default "1.1";
+    String version() default "1.2";
 
     String dependencies() default "";
 }
