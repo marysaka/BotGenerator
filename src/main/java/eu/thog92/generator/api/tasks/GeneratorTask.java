@@ -105,7 +105,7 @@ public class GeneratorTask implements ITask<String>
                 int pos = toReplace.indexOf("=");
                 String maxStr = toReplace.substring(pos + 1, toReplace.length());
                 int maxRand = Integer.valueOf(maxStr);
-                int num = 0;
+                int num = rand.nextInt(maxRand);
                 while (!checkForAllOneDigit(num))
                     num = rand.nextInt(maxRand);
 
