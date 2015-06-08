@@ -22,7 +22,7 @@ configurations {
 if (System.env.BUILD_NUMBER != null) version = "$version.$System.env.BUILD_NUMBER"
 
 dependencies {
-    compile 'org.twitter4j:twitter4j-core:4.0.2'
+    compile 'org.twitter4j:twitter4j-core:4.0.3'
     compile 'com.google.code.gson:gson:2.3.1'
 }
 

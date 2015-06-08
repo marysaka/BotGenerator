@@ -1,14 +1,16 @@
 package eu.thog92.generator.api.twitter;
 
 
+import eu.thog92.generator.api.annotations.Module;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
+@Module(name = "twitter", version = "1.2")
 public class TwitterModule
 {
-    private static TwitterModule instance = new TwitterModule();
+    private static TwitterModule instance;
 
-    private TwitterModule() {}
+    public TwitterModule() { instance = this;}
 
     public static TwitterModule getInstance()
     {
