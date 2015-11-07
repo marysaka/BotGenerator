@@ -37,7 +37,7 @@ public class IRCClient
     }
 
 
-    public IRCClient connect() throws IOException
+    public void connect() throws IOException
     {
         this.socket = new Socket(host, port);
         this.socket.setKeepAlive(true);
@@ -46,7 +46,6 @@ public class IRCClient
         this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), Charset.forName("UTF-8")));
         this.login();
         this.startLoop();
-        return this;
     }
 
     public IRCClient setPrintStream(PrintStream printStream)
@@ -116,7 +115,7 @@ public class IRCClient
     }
 
 
-    public void login() throws IOException
+    public void login()
     {
 
         if (this.serverPassword != null)
@@ -157,7 +156,13 @@ public class IRCClient
                     out.flush();
                 } catch (IOException e)
                 {
-                    System.exit(1);
+                    if (out != null)
+                        try
+                        {
+                            out.close();
+                        } catch (IOException e1)
+                        {
+                        }
                 }
             }
         }.start();

@@ -4,12 +4,17 @@ import eu.thog92.generator.api.BotGenerator;
 import eu.thog92.generator.api.annotations.Module;
 import eu.thog92.generator.api.events.EventBus;
 import eu.thog92.generator.api.events.InitEvent;
+import eu.thog92.generator.api.irc.IRCClient;
+import eu.thog92.generator.api.irc.IRCConfiguration;
 import eu.thog92.generator.core.TasksManager;
 import eu.thog92.generator.core.exception.ModuleInitializationException;
 import eu.thog92.generator.core.http.HttpServerManager;
 import eu.thog92.generator.core.loader.ModuleFinder;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +24,7 @@ public class BotGeneratorImpl extends BotGenerator
     private final List<String> activesAddons = new ArrayList<>();
     private ModuleFinder loader;
 
-    private BotGeneratorImpl() throws IllegalAccessException, IOException
+    private BotGeneratorImpl() throws IllegalAccessException
     {
         super(new TasksManager(), new EventBus(), new HttpServerManager());
     }
@@ -29,7 +34,7 @@ public class BotGeneratorImpl extends BotGenerator
         try
         {
             new BotGeneratorImpl().init();
-        } catch (IllegalAccessException | IOException e)
+        } catch (IllegalAccessException e)
         {
             e.printStackTrace();
         }
@@ -55,6 +60,22 @@ public class BotGeneratorImpl extends BotGenerator
 
         this.eventBus.post(new InitEvent());
         System.out.println("Active modules: " + activesAddons.size() + " " +  modules.keySet());
+    }
+
+    @Override
+    public void checkAndCreateIRCClient(IRCConfiguration ircConfiguration, String logDirName) throws IOException
+    {
+        if(ircConfiguration.enabled)
+        {
+            File logFile = new File("log/" + logDirName + "/irc.log");
+            logFile.getParentFile().mkdirs();
+            logFile.delete();
+            logFile.createNewFile();
+
+            FileOutputStream out = new FileOutputStream(logFile);
+            IRCClient ircClient = IRCClient.createIRCClient(ircConfiguration.hostname, ircConfiguration.port, ircConfiguration.username).addChannels(ircConfiguration.channels).setPrintStream(new PrintStream(out, false, "UTF-8"));
+            ircClient.connect();
+        }
     }
 
     private void loadModule(Map<String, Class> modules, String name) throws ModuleInitializationException

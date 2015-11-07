@@ -48,4 +48,10 @@ public class Dictionary
 
         dictionary.put(blackListFile.getName().replace(".txt", ""), new WritableArrayList<>(ArrayListHelper.loadStringArrayFromFile(blackListFile.getAbsolutePath()), blackListFile));
     }
+
+    public void load() throws IOException
+    {
+        this.loadCombinations();
+        this.loadBlackList();
+    }
 }

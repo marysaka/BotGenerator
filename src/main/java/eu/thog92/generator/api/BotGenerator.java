@@ -1,7 +1,10 @@
 package eu.thog92.generator.api;
 
 import eu.thog92.generator.api.events.EventBus;
+import eu.thog92.generator.api.irc.IRCConfiguration;
 import eu.thog92.generator.api.tasks.ITaskManager;
+
+import java.io.IOException;
 
 public abstract class BotGenerator
 {
@@ -63,7 +66,8 @@ public abstract class BotGenerator
 
     public String getAPIVersion()
     {
-        return "1.1";
+        return "1.3";
     }
 
+    public abstract void checkAndCreateIRCClient(IRCConfiguration ircConfiguration, String logFileName) throws IOException;
 }
