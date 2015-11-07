@@ -16,7 +16,7 @@ public class Dictionary
 
     public void loadCombinations() throws IOException
     {
-        if (!dicDir.exists())
+        if (!dicDir.exists() || dicDir.listFiles() == null)
             throw new IOException(dicDir.getAbsolutePath() + " directory doesn't exist!");
 
         this.dictionary = new HashMap<>();

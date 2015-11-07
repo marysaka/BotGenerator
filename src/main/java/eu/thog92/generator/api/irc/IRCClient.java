@@ -8,6 +8,7 @@ import eu.thog92.generator.api.events.irc.IRCReady;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,8 +42,8 @@ public class IRCClient
         this.socket = new Socket(host, port);
         this.socket.setKeepAlive(true);
         this.socket.setSoTimeout(200000);
-        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream(), Charset.forName("UTF-8")));
+        this.out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), Charset.forName("UTF-8")));
         this.login();
         this.startLoop();
         return this;

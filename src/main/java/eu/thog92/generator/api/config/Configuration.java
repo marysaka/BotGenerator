@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.*;
+import java.nio.charset.Charset;
 
 public class Configuration
 {
@@ -27,7 +28,7 @@ public class Configuration
     {
         try
         {
-            return this.gson.fromJson(new FileReader(configFile), clazz);
+            return this.gson.fromJson(new InputStreamReader(new FileInputStream(configFile), Charset.forName("UTF-8")), clazz);
         } catch (FileNotFoundException e)
         {
             return null;
@@ -45,7 +46,8 @@ public class Configuration
             }
 
             FileOutputStream fileOutputStream = new FileOutputStream(configFile);
-            fileOutputStream.write(this.gson.toJson(config).getBytes());
+            fileOutputStream.write(this.gson.toJson(config).getBytes(Charset.forName("UTF-8")));
+            fileOutputStream.flush();
             fileOutputStream.close();
         } catch (IOException e)
         {

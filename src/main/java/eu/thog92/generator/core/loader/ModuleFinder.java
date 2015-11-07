@@ -155,6 +155,7 @@ public class ModuleFinder
                             }
                         }
                     }
+                    is.close();
                 }
 
                 // Support IDE and Gradle class dirs

@@ -95,7 +95,7 @@ public class GeneratorTask implements ITask<String>
                 } else
                 {
                     while (value == 0)
-                        value = rand.nextInt(Integer.valueOf(input));
+                        value = rand.nextInt(Integer.parseInt(input));
                 }
 
                 sentence = sentence.replaceFirst(toReplace, String.valueOf(value));
@@ -104,7 +104,7 @@ public class GeneratorTask implements ITask<String>
             {
                 int pos = toReplace.indexOf("=");
                 String maxStr = toReplace.substring(pos + 1, toReplace.length());
-                int maxRand = Integer.valueOf(maxStr);
+                int maxRand = Integer.parseInt(maxStr);
                 int num = rand.nextInt(maxRand);
                 while (!checkForAllOneDigit(num))
                     num = rand.nextInt(maxRand);

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.Charset;
 
 public class ResourceHandler implements HttpHandler, IResourceHandler
 {
@@ -20,6 +21,7 @@ public class ResourceHandler implements HttpHandler, IResourceHandler
     public void handle(HttpExchange ext) throws IOException
     {
         OutputStream os = ext.getResponseBody();
+        InputStream in = null;
         try
         {
             String path = ext.getRequestURI().toString().replaceFirst("/", "/public/");
@@ -28,12 +30,12 @@ public class ResourceHandler implements HttpHandler, IResourceHandler
                 path = defaultPage;
             }
             URL resource = ResourceHandler.class.getResource(path);
-            InputStream in = ResourceHandler.class.getResourceAsStream(path);
+            in = ResourceHandler.class.getResourceAsStream(path);
             if (resource == null)
             {
 
                 ext.sendResponseHeaders(404, default404Message.length());
-                os.write(default404Message.getBytes());
+                os.write(default404Message.getBytes(Charset.forName("UTF-8")));
                 os.close();
                 return;
             }
@@ -42,11 +44,17 @@ public class ResourceHandler implements HttpHandler, IResourceHandler
             ext.sendResponseHeaders(200, new File(resource.getFile()).length());
             while ((len = in.read(buf, 0, 1024)) != -1)
                 os.write(buf, 0, len);
+            in.close();
             os.close();
         } catch (Exception e)
         {
             e.printStackTrace();
-            os.write(default404Message.getBytes());
+            try
+            {
+                if (in != null)
+                    in.close();
+            } catch (IOException ignored) {}
+            os.write(default404Message.getBytes(Charset.forName("UTF-8")));
             os.close();
         }
 

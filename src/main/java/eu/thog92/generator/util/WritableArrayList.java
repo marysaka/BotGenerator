@@ -1,9 +1,7 @@
 package eu.thog92.generator.util;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -28,8 +26,7 @@ public class WritableArrayList<E> extends ArrayList<E>
             BufferedWriter out;
             try
             {
-                out = new BufferedWriter(new FileWriter(file.getAbsolutePath(),
-                        true));
+                out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file.getAbsolutePath()), Charset.forName("UTF-8")));
                 s += "\n";
                 out.write(s, 0, s.length());
                 out.flush();
