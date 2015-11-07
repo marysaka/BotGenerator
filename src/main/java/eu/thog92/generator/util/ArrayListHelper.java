@@ -12,7 +12,7 @@ public class ArrayListHelper
             throws IOException
     {
 
-        ArrayList<String> tmp = new ArrayList<String>();
+        ArrayList<String> tmp = new ArrayList<>();
         BufferedReader fileIn = new BufferedReader(new FileReader(file));
 
         String entry;

@@ -9,6 +9,7 @@ import eu.thog92.generator.api.events.irc.IRCReady;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class IRCClient
@@ -31,7 +32,7 @@ public class IRCClient
         this.port = port;
         this.printStream = System.out;
         this.eventBus = BotGenerator.getInstance().getEventBus();
-        this.channels = new ArrayList<String>();
+        this.channels = new ArrayList<>();
     }
 
 
@@ -62,20 +63,17 @@ public class IRCClient
                 while ((line = getLastLine()) != null)
                 {
                     printStream.println("STARTUP: " + line);
-                    if (line.indexOf("004") >= 0)
+                    if (line.contains("004"))
                     {
                         // We are now logged in.
                         printStream.println("Logged in!");
                         eventBus.post(new IRCReady(instance));
-                        for(String channel : channels)
-                        {
-                            joinChannel(channel);
-                        }
+                        channels.forEach(IRCClient.this::joinChannel);
                         break;
                     } else if (line.startsWith("PING"))
                     {
                         pong(line.substring(5), true);
-                    } else if (line.indexOf("433") >= 0)
+                    } else if (line.contains("433"))
                     {
                         printStream.println("Nickname is already in use.");
                         return;
@@ -140,10 +138,7 @@ public class IRCClient
 
     public IRCClient addChannels(String... channels)
     {
-        for(String channel : channels)
-        {
-            this.channels.add(channel);
-        }
+        Collections.addAll(this.channels, channels);
         return this;
     }
 

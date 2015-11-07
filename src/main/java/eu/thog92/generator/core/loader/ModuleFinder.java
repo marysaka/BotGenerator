@@ -19,9 +19,9 @@ import java.util.jar.JarInputStream;
 public class ModuleFinder
 {
 
-    private final List<String> blackListedPackage = new ArrayList<String>();
+    private final List<String> blackListedPackage = new ArrayList<>();
 
-    private final HashMap<String, Module> annotationCache = new HashMap<String, Module>();
+    private final HashMap<String, Module> annotationCache = new HashMap<>();
 
     public ModuleFinder()
     {
@@ -48,7 +48,7 @@ public class ModuleFinder
         if (packageName.startsWith("."))
             packageName = packageName.substring(1);
 
-        Map<String, Class> classes = new HashMap<String, Class>();
+        Map<String, Class> classes = new HashMap<>();
 
         if (!directory.exists())
         {
@@ -114,7 +114,7 @@ public class ModuleFinder
                 }
             }
         }
-        Map<String, Class> classes = new HashMap<String, Class>();
+        Map<String, Class> classes = new HashMap<>();
 
         try
         {
