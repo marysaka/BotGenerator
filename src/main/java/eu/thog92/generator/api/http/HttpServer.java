@@ -2,6 +2,7 @@ package eu.thog92.generator.api.http;
 
 import eu.thog92.generator.api.BotGenerator;
 import eu.thog92.generator.core.http.handler.ChannelHandler;
+import eu.thog92.generator.util.MineTypeDatabase;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
@@ -239,7 +240,7 @@ public class HttpServer
         {
             e.printStackTrace();
         }
-        if (mineType == null) mineType = "application/octet-stream";
+        if (mineType == null) mineType = MineTypeDatabase.getMineType(f);
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, mineType);
     }
 

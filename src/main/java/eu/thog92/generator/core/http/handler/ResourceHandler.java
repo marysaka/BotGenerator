@@ -3,6 +3,7 @@ package eu.thog92.generator.core.http.handler;
 
 import eu.thog92.generator.api.http.IRequestHandler;
 import eu.thog92.generator.api.http.IResourceHandler;
+import eu.thog92.generator.util.MineTypeDatabase;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.ssl.SslHandler;
@@ -25,18 +26,6 @@ public class ResourceHandler implements IResourceHandler, IRequestHandler
     private final Map<String, File> RESOURCE_CACHE = new HashMap<>();
     private String defaultPage = "/public/index.html";
 
-    public static String getExtension(String fileName)
-    {
-        String extension = "";
-
-        int i = fileName.lastIndexOf('.');
-        if (i >= 0)
-        {
-            extension = fileName.substring(i + 1);
-        }
-        return extension;
-    }
-
     public File getResourceAsFile(String resourcePath)
     {
         if (RESOURCE_CACHE.containsKey(resourcePath) && RESOURCE_CACHE.get(resourcePath).exists())
@@ -50,7 +39,7 @@ public class ResourceHandler implements IResourceHandler, IRequestHandler
                 return null;
             }
 
-            File tempFile = File.createTempFile(String.valueOf(in.hashCode()), "." + getExtension(resourcePath));
+            File tempFile = File.createTempFile(String.valueOf(in.hashCode()), "." + MineTypeDatabase.getExtension(resourcePath));
             RESOURCE_CACHE.put(resourcePath, tempFile);
             tempFile.deleteOnExit();
 
