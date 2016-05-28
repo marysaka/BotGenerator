@@ -41,6 +41,8 @@ public class ModuleFinder
         blackListedPackage.add("org/w3c");
         blackListedPackage.add("sun/");
         blackListedPackage.add("twitter4j/");
+        blackListedPackage.add("javassist/");
+        blackListedPackage.add("io/netty");
     }
 
     private Map<String, Class> findClasses(File directory, String packageName)
@@ -150,7 +152,7 @@ public class ModuleFinder
                                 }
 
 
-                            } catch (Exception ignored)
+                            } catch (Exception | NoClassDefFoundError ignored)
                             {
                             }
                         }

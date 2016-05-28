@@ -1,10 +1,11 @@
 package eu.thog92.generator.api;
 
-import com.sun.net.httpserver.HttpServer;
+import eu.thog92.generator.api.http.HttpServer;
 
+import java.io.File;
 import java.io.IOException;
 
 public interface IHttpServerManager
 {
-    HttpServer createHTTPServer(int port) throws IOException;
+    HttpServer createHTTPServer(int port, File sslDir) throws IOException;
 }

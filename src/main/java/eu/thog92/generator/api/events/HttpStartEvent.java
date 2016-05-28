@@ -1,7 +1,6 @@
 package eu.thog92.generator.api.events;
-
-import com.sun.net.httpserver.HttpServer;
-import eu.thog92.generator.api.IResourceHandler;
+import eu.thog92.generator.api.http.IResourceHandler;
+import eu.thog92.generator.api.http.HttpServer;
 
 public class HttpStartEvent implements IEvent
 {
@@ -14,6 +13,7 @@ public class HttpStartEvent implements IEvent
         this.resourcesHandler = resourcesHandler;
     }
 
+    @Deprecated
     public HttpServer getServer()
     {
         return httpServer;

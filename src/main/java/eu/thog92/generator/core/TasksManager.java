@@ -33,4 +33,9 @@ public class TasksManager implements ITaskManager
             }
         }
     }
+
+    public ScheduledExecutorService getScheduler()
+    {
+        return scheduler;
+    }
 }
