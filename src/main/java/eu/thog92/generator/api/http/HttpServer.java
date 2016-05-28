@@ -10,8 +10,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.*;
-import io.netty.handler.logging.LogLevel;
-import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslProvider;
@@ -61,8 +59,7 @@ public class HttpServer
         {
             File sslCert = new File(sslDir, "server.cert");
             File sslPrivKey = new File(sslDir, "server.key");
-            if (sslCert.exists() && sslPrivKey.exists())
-                sslCtx = SslContextBuilder.forServer(sslCert, sslPrivKey).sslProvider(SslProvider.OPENSSL).build();
+                sslCtx = SslContextBuilder.forServer(sslCert, sslPrivKey).sslProvider(SslProvider.JDK).build();
         } catch (SSLException e)
         {
             e.printStackTrace();
