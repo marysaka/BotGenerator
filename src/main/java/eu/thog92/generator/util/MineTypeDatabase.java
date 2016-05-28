@@ -31,7 +31,7 @@ public final class MineTypeDatabase
 
     public static String getMineType(File extension)
     {
-        return TYPES.getOrDefault(extension, "application/octet-stream");
+        return TYPES.getOrDefault(getExtension(extension.getName()), "application/octet-stream");
     }
 
     static
